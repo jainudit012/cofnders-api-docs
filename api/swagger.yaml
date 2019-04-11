@@ -1,0 +1,3865 @@
+---
+swagger: "2.0"
+info:
+  description: "api documentation"
+  version: "1"
+  title: "cofnders api "
+host: "virtserver.swaggerhub.com"
+basePath: "/https://b2wuhx8v6d.execute-api.ap-southeast-1.amazonaws.com/dev"
+schemes:
+- "https"
+paths:
+  /users:
+    get:
+      description: "Gets All Users from Database"
+      operationId: "usersGET"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "It should return All Users."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              users:
+                type: "array"
+                items:
+                  type: "object"
+                  properties: {}
+            example:
+              error: false
+              users:
+              - _id: "5c9efdde0bb9defc9c218c65"
+                fullName: "Udit Jain"
+                firstName: "Udit"
+                lastName: "Jain"
+                email: "jainudit.012@gmail.com"
+                emailVerified: true
+                profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                sub: "linkedin|oP4sPrYxft"
+                isAdmin: true
+                isFormFilled: true
+                isActive: true
+                createdAt: "1553923550413"
+                updatedAt: "1553927113266"
+                brief: "my brief"
+                purpose: "my purpose"
+        403:
+          description: "Not authorized if user is not Admin."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Not Authorized!"
+        404:
+          description: "No Users Found in DB."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could not find any Users!"
+      x-swagger-router-controller: "Default"
+    post:
+      description: "Lets user get a new token"
+      operationId: "usersPOST"
+      parameters:
+      - in: "body"
+        name: "Body"
+        description: "data to create the token or a new user"
+        required: true
+        schema:
+          $ref: "#/definitions/Body"
+      responses:
+        200:
+          description: "Successfully returned a token"
+          schema:
+            type: "object"
+            required:
+            - "token"
+            properties:
+              error:
+                type: "boolean"
+              token:
+                type: "string"
+              briefFilled:
+                type: "boolean"
+            example:
+              error: false
+              token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOWVmZGRlMGJiOWRlZmM5YzIxOGM2NSIsImlzQWRtaW4iOmZhbHNlLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNTUzOTM0NTA2LCJleHAiOjE1NTM5NzA1MDZ9.ron2Gh--Jym8p_8Iqu4gbuo6rO1LE8DKzAdrezwIWKY"
+        400:
+          description: "Error in data of Body. Invalid Request. No token in body"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "No token in body!"
+        401:
+          description: "Error in token. Un-authorized! Expired token, Issuer Incorrect\
+            \ or Incorrect Client."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Expired Token!"
+      x-swagger-router-controller: "Default"
+    put:
+      description: "Edits the Profile of the Logged In-User."
+      operationId: "usersPUT"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "User"
+        description: "The user Profile to Edit."
+        required: false
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        200:
+          description: "User Profile Edited."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              user:
+                type: "object"
+                properties: {}
+            example:
+              error: false
+              user:
+                _id: "5c9efdde0bb9defc9c218c65"
+                firstName: "Udit"
+                lastName: "Jain"
+                email: "jainudit.012@gmail.com"
+                emailVerified: true
+                profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                fullName: "Udit Jain"
+                sub: "linkedin|oP4sPrYxft"
+                purpose: "my purpose"
+                brief: "thi is my brief"
+                isAdmin: true
+                isFormFilled: true
+                isActive: true
+                createdAt: "2019-03-30T05:25:50.413Z"
+                updatedAt: "2019-03-30T06:25:13.266Z"
+        401:
+          description: "Not logged in or no token send in headers."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Not Logged In!"
+        404:
+          description: "User not found in database."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could not find the User!"
+        500:
+          description: "User Profile Not Updated"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could not Update the Profile!"
+      x-swagger-router-controller: "Default"
+  /users/me:
+    get:
+      description: "Returns Profile of the Logged in user."
+      operationId: "usersMeGET"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "User Profile Found."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              user:
+                type: "object"
+                properties: {}
+            example:
+              error: false
+              user:
+                _id: "5c9efdde0bb9defc9c218c65"
+                firstName: "Udit"
+                lastName: "Jain"
+                email: "jainudit.012@gmail.com"
+                emailVerified: true
+                profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                fullName: "Udit Jain"
+                sub: "linkedin|oP4sPrYxft"
+                purpose: "my purpose"
+                brief: "my brief"
+                isAdmin: true
+                isFormFilled: true
+                isActive: true
+                createdAt: "2019-03-30T05:25:50.413Z"
+                updatedAt: "2019-03-30T06:25:13.266Z"
+        401:
+          description: "Not logged in or no token send in headers."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Not Logged In!"
+        404:
+          description: "User not found in database."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could not find the User!"
+      x-swagger-router-controller: "Default"
+  /users/{userId}:
+    get:
+      description: "Returns Profile of the specified User for the Admin."
+      operationId: "usersUserIdGET"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "Id of the User that is to searched."
+        required: true
+        type: "string"
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "User Profile Found."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              user:
+                type: "object"
+                properties: {}
+            example:
+              error: false
+              user:
+                _id: "5c9efdde0bb9defc9c218c65"
+                firstName: "Udit"
+                lastName: "Jain"
+                email: "jainudit.012@gmail.com"
+                emailVerified: true
+                profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                fullName: "Udit Jain"
+                sub: "linkedin|oP4sPrYxft"
+                purpose: "my purpose"
+                brief: "my brief"
+                isAdmin: true
+                isFormFilled: true
+                isActive: true
+                createdAt: "2019-03-30T05:25:50.413Z"
+                updatedAt: "2019-03-30T06:25:13.266Z"
+        403:
+          description: "Not Admin User."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Not Authorized!"
+        404:
+          description: "User not found in database."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could not find the User!"
+      x-swagger-router-controller: "Default"
+  /projects:
+    get:
+      description: "Should get All Project if User is Admin."
+      operationId: "projectsGET"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      - name: "limit"
+        in: "query"
+        description: "Limits number of documents returned"
+        required: false
+        type: "string"
+      - name: "offset"
+        in: "query"
+        description: "No. of documents to skip"
+        required: false
+        type: "string"
+      - name: "sector"
+        in: "query"
+        required: false
+        type: "string"
+        enum:
+        - "HEALTHCARE_FITNESS"
+        - "FIN_TECH"
+        - "E_COMMERCE"
+        - "CONSUMER"
+        - "FOOD"
+        - "EDUCATION"
+        - "HR"
+      - name: "projectStage"
+        in: "query"
+        required: false
+        type: "string"
+        enum:
+        - "IDEA"
+        - "MVP"
+        - "GROWTH"
+        - "BETA"
+        - "GROWING"
+      responses:
+        200:
+          description: "Returns list of All the Projects"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              projects:
+                type: "array"
+                items:
+                  type: "object"
+                  properties: {}
+            example:
+              error: false
+              projects:
+              - _id: "5c9efdde0bb9defc9c218c65"
+                firstName: "Udit"
+                lastName: "Jain"
+                email: "jainudit.012@gmail.com"
+                emailVerified: true
+                profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                fullName: "Udit Jain"
+                sub: "linkedin|oP4sPrYxft"
+                purpose: "my purpose"
+                brief: "thi is my brief"
+                isAdmin: true
+                isFormFilled: true
+                isActive: true
+                createdAt: "2019-03-30T05:25:50.413Z"
+                updatedAt: "2019-03-30T06:25:13.266Z"
+        403:
+          description: "Not an Admin User."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "You do not have Correct Permissions!"
+        404:
+          description: "No Projects found in database."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could not find any Projects!"
+      x-swagger-router-controller: "Default"
+    post:
+      description: "Creates Project if User is Logged In."
+      operationId: "projectsPOST"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "Project"
+        description: "The Project Data from the User in request Body."
+        required: true
+        schema:
+          $ref: "#/definitions/Project"
+      responses:
+        200:
+          description: "Creates the Project."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              project:
+                type: "object"
+                properties: {}
+              msg:
+                type: "string"
+            example:
+              error: false
+              project:
+                projectName: "Start Universe"
+                projectNature: "SERVICE"
+                sector: "EDUCATION"
+                startupStage: "IDEA"
+                teamSize: "10"
+                acceptingFunds: true
+                pitch: "my pitch for this project that will make it a success."
+                problemSolvingDescription: "my description"
+                createdBy:
+                  _id: "5c9efdde0bb9defc9c218c65"
+                  firstName: "Udit"
+                  lastName: "Jain"
+                  email: "jainudit.012@gmail.com"
+                  emailVerified: true
+                  profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                  fullName: "Udit Jain"
+                  sub: "linkedin|oP4sPrYxft"
+                  purpose: "my purpose is this?"
+                  brief: "my brief"
+                  isAdmin: true
+                  isFormFilled: true
+                  isActive: true
+                  createdAt: "2019-03-30T05:25:50.413Z"
+                  updatedAt: "2019-04-01T09:38:11.109Z"
+                isApproved: false
+                createdByName: "Udit Jain"
+                projectApprovalStatus: "ADDED"
+                createdAt: "2019-04-03T10:00:02.116Z"
+                updatedAt: "2019-04-03T10:00:02.116Z"
+                _id: "5ca48422b7b102e96f3fae9b"
+              msg: "New Project Successfully Created."
+        400:
+          description: "Bad request. Missing Some Fields."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "No Project Stage provided!"
+        401:
+          description: "If user is not Logged in."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Cannot create Project. Must be logged in!"
+        404:
+          description: "No User found In Database"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could not find the User!"
+      x-swagger-router-controller: "Default"
+  /projects/approved:
+    get:
+      description: "Gets All the Approved Projects."
+      operationId: "projectsApprovedGET"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: false
+        type: "string"
+      - name: "limit"
+        in: "query"
+        description: "Limits number of documents returned"
+        required: false
+        type: "string"
+      - name: "offset"
+        in: "query"
+        description: "No. of documents to skip"
+        required: false
+        type: "string"
+      - name: "sector"
+        in: "query"
+        required: false
+        type: "string"
+        enum:
+        - "HEALTHCARE_FITNESS"
+        - "FIN_TECH"
+        - "E_COMMERCE"
+        - "CONSUMER"
+        - "FOOD"
+        - "EDUCATION"
+        - "HR"
+      - name: "stage"
+        in: "query"
+        required: false
+        type: "string"
+        enum:
+        - "IDEA"
+        - "MVP"
+        - "GROWTH"
+        - "BETA"
+        - "GROWING"
+      responses:
+        200:
+          description: "Gets All Approved Projects."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              projects:
+                type: "object"
+                properties: {}
+            example:
+              error: false
+              projects:
+              - _id: "5ca48422b7b102e96f3fae9b"
+                projectName: "Universe's Model"
+                projectNature: "SERVICE"
+                sector: "EDUCATION"
+                startupStage: "IDEA"
+                teamSize: "10"
+                acceptingFunds: true
+                pitch: "my pitch for this project that will make it a success."
+                problemSolvingDescription: "my description"
+                createdBy:
+                  _id: "5c9efdde0bb9defc9c218c65"
+                  firstName: "Udit"
+                  lastName: "Jain"
+                  email: "jainudit.012@gmail.com"
+                  emailVerified: true
+                  profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                  fullName: "Udit Jain"
+                  sub: "linkedin|oP4sPrYxft"
+                  purpose: "my purpose is this?"
+                  brief: "my brief"
+                  isAdmin: true
+                  isFormFilled: true
+                  isActive: true
+                  createdAt: "2019-03-30T05:25:50.413Z"
+                  updatedAt: "2019-04-01T09:38:11.109Z"
+                isApproved: "true"
+                createdByName: "Udit Jain"
+                projectApprovalStatus: "Approved"
+                createdAt: "2019-04-03T10:00:02.116Z"
+                updatedAt: "2019-04-03T10:45:52.752Z"
+              - _id: "5ca494686839789fccd3f25b"
+                projectName: "Start Universe"
+                projectNature: "SERVICE"
+                sector: "EDUCATION"
+                startupStage: "IDEA"
+                teamSize: "10"
+                acceptingFunds: true
+                pitch: "my pitch for this project that will make it a success."
+                problemSolvingDescription: "my description"
+                createdBy:
+                  _id: "5c9efdde0bb9defc9c218c65"
+                  firstName: "Udit"
+                  lastName: "Jain"
+                  email: "jainudit.012@gmail.com"
+                  emailVerified: true
+                  profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                  fullName: "Udit Jain"
+                  sub: "linkedin|oP4sPrYxft"
+                  purpose: "my purpose is this?"
+                  brief: "my brief"
+                  isAdmin: true
+                  isFormFilled: true
+                  isActive: true
+                  createdAt: "2019-03-30T05:25:50.413Z"
+                  updatedAt: "2019-04-01T09:38:11.109Z"
+                isApproved: true
+                createdByName: "Udit Jain"
+                projectApprovalStatus: "Approved"
+                createdAt: "2019-04-03T11:09:28.147Z"
+                updatedAt: "2019-04-03T11:09:28.147Z"
+        404:
+          description: "No Projects Found."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could not find any Projects!"
+      x-swagger-router-controller: "Default"
+  /projects/{userId}:
+    get:
+      description: "Gets All the Projects of the User."
+      operationId: "projectsUserIdGET"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      - name: "userId"
+        in: "path"
+        description: "User Id whose Projects Are to be shown"
+        required: true
+        type: "string"
+      - name: "limit"
+        in: "query"
+        description: "Limits number of documents returned"
+        required: false
+        type: "string"
+      - name: "offset"
+        in: "query"
+        description: "No. of documents to skip"
+        required: false
+        type: "string"
+      - name: "sector"
+        in: "query"
+        required: false
+        type: "string"
+        enum:
+        - "HEALTHCARE_FITNESS"
+        - "FIN_TECH"
+        - "E_COMMERCE"
+        - "CONSUMER"
+        - "FOOD"
+        - "EDUCATION"
+        - "HR"
+      - name: "stage"
+        in: "query"
+        required: false
+        type: "string"
+        enum:
+        - "IDEA"
+        - "MVP"
+        - "GROWTH"
+        - "BETA"
+        - "GROWING"
+      responses:
+        200:
+          description: "Gets All Projects made by User."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              projects:
+                type: "object"
+                properties: {}
+            example:
+              error: false
+              projects:
+              - _id: "5ca48422b7b102e96f3fae9b"
+                projectName: "Universe's Model"
+                projectNature: "SERVICE"
+                sector: "EDUCATION"
+                startupStage: "IDEA"
+                teamSize: "10"
+                acceptingFunds: true
+                pitch: "my pitch for this project that will make it a success."
+                problemSolvingDescription: "my description"
+                createdBy:
+                  _id: "5c9efdde0bb9defc9c218c65"
+                  firstName: "Udit"
+                  lastName: "Jain"
+                  email: "jainudit.012@gmail.com"
+                  emailVerified: true
+                  profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                  fullName: "Udit Jain"
+                  sub: "linkedin|oP4sPrYxft"
+                  purpose: "my purpose is this?"
+                  brief: "my brief"
+                  isAdmin: true
+                  isFormFilled: true
+                  isActive: true
+                  createdAt: "2019-03-30T05:25:50.413Z"
+                  updatedAt: "2019-04-01T09:38:11.109Z"
+                isApproved: "false"
+                createdByName: "Udit Jain"
+                projectApprovalStatus: "IN_REVIEW"
+                createdAt: "2019-04-03T10:00:02.116Z"
+                updatedAt: "2019-04-03T10:45:52.752Z"
+              - _id: "5ca494686839789fccd3f25b"
+                projectName: "Start Universe"
+                projectNature: "SERVICE"
+                sector: "EDUCATION"
+                startupStage: "IDEA"
+                teamSize: "10"
+                acceptingFunds: true
+                pitch: "my pitch for this project that will make it a success."
+                problemSolvingDescription: "my description"
+                createdBy:
+                  _id: "5c9efdde0bb9defc9c218c65"
+                  firstName: "Udit"
+                  lastName: "Jain"
+                  email: "jainudit.012@gmail.com"
+                  emailVerified: true
+                  profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                  fullName: "Udit Jain"
+                  sub: "linkedin|oP4sPrYxft"
+                  purpose: "my purpose is this?"
+                  brief: "my brief"
+                  isAdmin: true
+                  isFormFilled: true
+                  isActive: true
+                  createdAt: "2019-03-30T05:25:50.413Z"
+                  updatedAt: "2019-04-01T09:38:11.109Z"
+                isApproved: false
+                createdByName: "Udit Jain"
+                projectApprovalStatus: "ADDED"
+                createdAt: "2019-04-03T11:09:28.147Z"
+                updatedAt: "2019-04-03T11:09:28.147Z"
+        401:
+          description: "Not logged in or no token sent in headers."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Must be Logged In!"
+        404:
+          description: "No Projects Found."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could not find any Projects!"
+      x-swagger-router-controller: "Default"
+  /projects/{projectId}/:
+    put:
+      description: "Edits Project if User is the Creator or Admin."
+      operationId: "projectsProjectIdPUT"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      - name: "projectId"
+        in: "path"
+        description: "Id of the Project that is to be changed"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "Project"
+        description: "The Project Data that is to be changed."
+        required: false
+        schema:
+          $ref: "#/definitions/Project_1"
+      responses:
+        200:
+          description: "Edits the Project."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              project:
+                type: "object"
+                properties: {}
+              msg:
+                type: "string"
+            example:
+              error: false
+              project:
+                _id: "5ca48422b7b102e96f3fae9b"
+                projectName: "Universe's Model"
+                projectNature: "CAUSE"
+                sector: "EDUCATION"
+                startupStage: "IDEA"
+                teamSize: "10"
+                pitch: "my pitch for this project that will make it a success."
+                acceptingFunds: true
+                isApproved: false
+                projectApprovalStatus: "ADDED"
+                problemSolvingDescription: "my description"
+                createdByName: "Udit Jain"
+                createdAt: "2019-04-03T10:00:02.116Z"
+                updatedAt: "2019-04-03T10:00:02.116Z"
+              msg: "Successfully Updated the Project."
+        400:
+          description: "Bad request. Incorrect Data Value or Project Approved."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Stage can be Idea, MVP, Growth, Beta, Growing in Revenues"
+        401:
+          description: "If user is not Logged in."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "You are not Logged in!"
+        404:
+          description: "No User or No Searched Project found In Database"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "No User Found!"
+        500:
+          description: "Document Updation Error"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could Not Update the Project!"
+      x-swagger-router-controller: "Default"
+    delete:
+      description: "Deletes the Project if User is creator and project is not Approved\
+        \ or an Admin."
+      operationId: "projectsProjectIdDELETE"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      - name: "projectId"
+        in: "path"
+        description: "Id of the Project that is to be deleted"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successfully Deletes the Project"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              project:
+                type: "object"
+                properties: {}
+              msg:
+                type: "string"
+            example:
+              error: false
+              project: {}
+              msg: "Successfully Deleted the Project."
+        400:
+          description: "Bad request. Project is Already Approved"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Cannot Delete Once Project is Approved!"
+        401:
+          description: "If user is not Logged in."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "You are not Logged in!"
+        404:
+          description: "No User or No Searched Project found In Database"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could Not find the Project!"
+        500:
+          description: "Document Updation Error"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could Not Delete the Project!"
+      x-swagger-router-controller: "Default"
+  /projects/approve/{projectId}:
+    put:
+      description: "Approves Project if User is Admin."
+      operationId: "projectsApproveProjectIdPUT"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      - name: "projectId"
+        in: "path"
+        description: "Id of the Project that is to be changed"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "Approval Status"
+        description: "Status that is to be set for the Project."
+        required: false
+        schema:
+          $ref: "#/definitions/Approval Status"
+      responses:
+        200:
+          description: "Updates the Approval Status of the Project."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              project:
+                type: "object"
+                properties: {}
+              msg:
+                type: "string"
+            example:
+              error: false
+              project:
+                _id: "5ca48422b7b102e96f3fae9b"
+                projectName: "Universe's Model"
+                projectNature: "SERVICE"
+                sector: "EDUCATION"
+                startupStage: "IDEA"
+                teamSize: "10"
+                pitch: "my pitch for this project that will make it a success."
+                acceptingFunds: true
+                isApproved: "false"
+                projectApprovalStatus: "IN_REVIEW"
+                problemSolvingDescription: "my description"
+                createdByName: "Udit Jain"
+                createdAt: "2019-04-03T10:00:02.116Z"
+                updatedAt: "2019-04-03T10:39:45.165Z"
+              msg: "Successfully Updated Approval Status."
+        400:
+          description: "Bad request. Incorrect Data Value."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Status can be only IN_REVIEW, APPROVED or REJECTED"
+        403:
+          description: "If user is not Admin."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Not An Admin!"
+        404:
+          description: "No User or No Searched Project found In Database"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could Not find the Project!"
+        500:
+          description: "Document Updation Error"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could Not Update the Project!"
+      x-swagger-router-controller: "Default"
+  /projects/intouch/{projectId}:
+    post:
+      description: "Sends Get In Touch Form for Project."
+      operationId: "projectsIntouchProjectIdPOST"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      - name: "projectId"
+        in: "path"
+        description: "Id of the Project for ehich the Get in Touch is to be sent"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "Body"
+        description: "The Get in Touch Data in request body."
+        required: true
+        schema:
+          $ref: "#/definitions/Body_1"
+      responses:
+        200:
+          description: "Successfully Sent notification to Project Owner and created\
+            \ form data."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              msg:
+                type: "string"
+            example:
+              error: false
+              msg: "Successfully sent your Response."
+        400:
+          description: "Bad request. Incorrect Data Value."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "User Type is to be Provided!"
+        401:
+          description: "Not Logged In."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "You have to be logged In."
+        404:
+          description: "No User or No such Project found In Database"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could Not find the Project!"
+        500:
+          description: "Form creation Error"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could not create the Get in touch Form!"
+      x-swagger-router-controller: "Default"
+  /opportunities:
+    get:
+      description: "Gets All Opportunities from Database"
+      operationId: "opportunitiesGET"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: false
+        type: "string"
+      - name: "limit"
+        in: "query"
+        description: "Limits number of documents returned"
+        required: false
+        type: "string"
+      - name: "offset"
+        in: "query"
+        description: "No. of documents to skip"
+        required: false
+        type: "string"
+      - name: "sector"
+        in: "query"
+        required: false
+        type: "string"
+        enum:
+        - "HEALTHCARE_FITNESS"
+        - "FIN_TECH"
+        - "E_COMMERCE"
+        - "CONSUMER"
+        - "FOOD"
+        - "EDUCATION"
+        - "HR"
+      - name: "projectStage"
+        in: "query"
+        required: false
+        type: "string"
+        enum:
+        - "IDEA"
+        - "MVP"
+        - "GROWTH"
+        - "BETA"
+        - "GROWING"
+      responses:
+        200:
+          description: "It should return All the Opportunities as Specified."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              opportunities:
+                type: "array"
+                items:
+                  type: "object"
+                  properties: {}
+            example:
+              error: false
+              opportunities:
+              - _id: "5c63f50940f3e80874432194"
+                projectId: "5c63f42940f3e80874432193"
+                requirement: "IDEA_VALIDATION"
+                specifics: "https://www.linkedin.com/in/rahul-mamgain-70442521/"
+              - _id: "5ca74add1731502cf285c8be"
+                project:
+                  _id: "5ca711af292627172e67c52e"
+                  projectName: "Statistics"
+                  pitch: "this product is amazing"
+                  isApproved: true
+                  createdByName: "Udit Jain"
+                  projectApprovalStatus: "Approved"
+                  createdAt: "2019-04-05T08:28:31.482Z"
+                  updatedAt: "2019-04-05T12:32:24.720Z"
+                  approvedAt: "2019-04-05T09:02:46.910Z"
+                requirement: "IDEA_VALIDATION"
+                createdBy:
+                  _id: "5c9efdde0bb9defc9c218c65"
+                  email: "jainudit.012@gmail.com"
+                  profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                  fullName: "Udit Jain"
+                  isActive: true
+                  createdAt: "2019-03-30T05:25:50.413Z"
+                  updatedAt: "2019-04-05T08:21:25.324Z"
+                createdAt: "2019-04-05T12:32:29.137Z"
+                updatedAt: "2019-04-08T09:29:41.632Z"
+              - _id: "5cab14fc70095b559d5eda4a"
+                project:
+                  _id: "5ca48422b7b102e96f3fae9b"
+                  projectName: "Universe's Model"
+                  pitch: "my pitch for this project that will make it a success."
+                  isApproved: true
+                  createdByName: "Udit Jain"
+                  projectApprovalStatus: "Approved"
+                  createdAt: "2019-04-03T10:00:02.116Z"
+                  updatedAt: "2019-04-05T09:15:52.717Z"
+                  approvedAt: "2019-04-05T09:15:52.656Z"
+                requirement: "SERVICE_PARTNERS_VENDORS"
+                details: "some details are changed "
+                createdBy:
+                  _id: "5c9efdde0bb9defc9c218c65"
+                  email: "jainudit.012@gmail.com"
+                  profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                  fullName: "Udit Jain"
+                  isActive: true
+                  createdAt: "2019-03-30T05:25:50.413Z"
+                  updatedAt: "2019-04-01T09:38:11.109Z"
+                createdAt: "2019-04-08T09:31:40.155Z"
+                updatedAt: "2019-04-08T09:33:22.956Z"
+        404:
+          description: "No Opportunities Found in DB."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could Not find Any Opportunities!"
+      x-swagger-router-controller: "Default"
+  /opportunities/{userId}:
+    get:
+      description: "Gets Opportunities from Database of the User"
+      operationId: "opportunitiesUserIdGET"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "Id of the User that is to searched."
+        required: true
+        type: "string"
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: false
+        type: "string"
+      - name: "limit"
+        in: "query"
+        description: "Limits number of documents returned"
+        required: false
+        type: "string"
+      - name: "offset"
+        in: "query"
+        description: "No. of documents to skip"
+        required: false
+        type: "string"
+      - name: "sector"
+        in: "query"
+        required: false
+        type: "string"
+        enum:
+        - "HEALTHCARE_FITNESS"
+        - "FIN_TECH"
+        - "E_COMMERCE"
+        - "CONSUMER"
+        - "FOOD"
+        - "EDUCATION"
+        - "HR"
+      - name: "projectStage"
+        in: "query"
+        required: false
+        type: "string"
+        enum:
+        - "IDEA"
+        - "MVP"
+        - "GROWTH"
+        - "BETA"
+        - "GROWING"
+      responses:
+        200:
+          description: "It should return the Opportunities of the User as Specified."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              opportunities:
+                type: "array"
+                items:
+                  type: "object"
+                  properties: {}
+            example:
+              error: false
+              opportunities:
+              - _id: "5ca74add1731502cf285c8be"
+                project:
+                  _id: "5ca711af292627172e67c52e"
+                  projectName: "Statistics"
+                  projectNature: "SERVICE"
+                  sector: "FIN_TECH"
+                  startupStage: "MVP"
+                  teamSize: "2"
+                  acceptingFunds: "true"
+                  pitch: "this product is amazing"
+                  createdBy:
+                    _id: "5c9efdde0bb9defc9c218c65"
+                    firstName: "Udit"
+                    lastName: "Jain"
+                    email: "jainudit.012@gmail.com"
+                    emailVerified: true
+                    profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                    fullName: "Udit Jain"
+                    sub: "linkedin|oP4sPrYxft"
+                    purpose: "this is the new purpose 2.0"
+                    brief: "my brief"
+                    isAdmin: true
+                    isFormFilled: true
+                    isActive: true
+                    createdAt: "2019-03-30T05:25:50.413Z"
+                    updatedAt: "2019-04-05T08:21:25.324Z"
+                  isApproved: true
+                  createdByName: "Udit Jain"
+                  projectApprovalStatus: "Approved"
+                  createdAt: "2019-04-05T08:28:31.482Z"
+                  updatedAt: "2019-04-05T12:32:24.720Z"
+                  responseCount: 2
+                  approvedAt: "2019-04-05T09:02:46.910Z"
+                requirement: "IDEA_VALIDATION"
+                createdBy:
+                  _id: "5c9efdde0bb9defc9c218c65"
+                  firstName: "Udit"
+                  lastName: "Jain"
+                  email: "jainudit.012@gmail.com"
+                  emailVerified: true
+                  profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                  fullName: "Udit Jain"
+                  sub: "linkedin|oP4sPrYxft"
+                  purpose: "this is the new purpose 2.0"
+                  brief: "my brief"
+                  isAdmin: true
+                  isFormFilled: true
+                  isActive: true
+                  createdAt: "2019-03-30T05:25:50.413Z"
+                  updatedAt: "2019-04-05T08:21:25.324Z"
+                createdAt: "2019-04-05T12:32:29.137Z"
+                updatedAt: "2019-04-08T09:29:41.632Z"
+              - _id: "5cab14fc70095b559d5eda4a"
+                project:
+                  _id: "5ca48422b7b102e96f3fae9b"
+                  projectName: "Universe's Model"
+                  projectNature: "SERVICE"
+                  sector: "EDUCATION"
+                  startupStage: "IDEA"
+                  teamSize: "10"
+                  acceptingFunds: true
+                  pitch: "my pitch for this project that will make it a success."
+                  problemSolvingDescription: "my description"
+                  createdBy:
+                    _id: "5c9efdde0bb9defc9c218c65"
+                    firstName: "Udit"
+                    lastName: "Jain"
+                    email: "jainudit.012@gmail.com"
+                    emailVerified: true
+                    profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                    fullName: "Udit Jain"
+                    sub: "linkedin|oP4sPrYxft"
+                    purpose: "my purpose is this?"
+                    brief: "my brief"
+                    isAdmin: true
+                    isFormFilled: true
+                    isActive: true
+                    createdAt: "2019-03-30T05:25:50.413Z"
+                    updatedAt: "2019-04-01T09:38:11.109Z"
+                  isApproved: true
+                  createdByName: "Udit Jain"
+                  projectApprovalStatus: "Approved"
+                  createdAt: "2019-04-03T10:00:02.116Z"
+                  updatedAt: "2019-04-05T09:15:52.717Z"
+                  approvedAt: "2019-04-05T09:15:52.656Z"
+                requirement: "SERVICE_PARTNERS_VENDORS"
+                details: "some details are changed "
+                createdBy:
+                  _id: "5c9efdde0bb9defc9c218c65"
+                  firstName: "Udit"
+                  lastName: "Jain"
+                  email: "jainudit.012@gmail.com"
+                  emailVerified: true
+                  profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                  fullName: "Udit Jain"
+                  sub: "linkedin|oP4sPrYxft"
+                  purpose: "my purpose is this?"
+                  brief: "my brief"
+                  isAdmin: true
+                  isFormFilled: true
+                  isActive: true
+                  createdAt: "2019-03-30T05:25:50.413Z"
+                  updatedAt: "2019-04-01T09:38:11.109Z"
+                createdAt: "2019-04-08T09:31:40.155Z"
+                updatedAt: "2019-04-08T09:33:22.956Z"
+        401:
+          description: "Not Logged In or not the creator."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Not Logged In!"
+        404:
+          description: "No Opportunities Found."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could not Find Any Opportunities!"
+      x-swagger-router-controller: "Default"
+  /opportunities/{projectId}/:
+    post:
+      description: "Creates an Opportunity resource for Logged In User for their approved\
+        \ Projects."
+      operationId: "opportunitiesProjectIdPOST"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Id of the Approved Project that is to added in Opportunity"
+        required: true
+        type: "string"
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "Opportunity"
+        description: "The Opportunity Data."
+        required: true
+        schema:
+          $ref: "#/definitions/Opportunity"
+      responses:
+        200:
+          description: "Creates the Opportunity."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              opportunity:
+                type: "object"
+                properties: {}
+              msg:
+                type: "string"
+            example:
+              error: false
+              msg: "Opportunity for the Project Created"
+              opportunity:
+                project:
+                  _id: "5ca48422b7b102e96f3fae9b"
+                  projectName: "Universe's Model"
+                  projectNature: "SERVICE"
+                  sector: "EDUCATION"
+                  startupStage: "IDEA"
+                  teamSize: "10"
+                  acceptingFunds: true
+                  pitch: "my pitch for this project that will make it a success."
+                  problemSolvingDescription: "my description"
+                  createdBy:
+                    _id: "5c9efdde0bb9defc9c218c65"
+                    firstName: "Udit"
+                    lastName: "Jain"
+                    email: "jainudit.012@gmail.com"
+                    emailVerified: true
+                    profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                    fullName: "Udit Jain"
+                    sub: "linkedin|oP4sPrYxft"
+                    purpose: "my purpose is this?"
+                    brief: "my brief"
+                    isAdmin: true
+                    isFormFilled: true
+                    isActive: true
+                    createdAt: "2019-03-30T05:25:50.413Z"
+                    updatedAt: "2019-04-01T09:38:11.109Z"
+                  isApproved: true
+                  createdByName: "Udit Jain"
+                  projectApprovalStatus: "Approved"
+                  createdAt: "2019-04-03T10:00:02.116Z"
+                  updatedAt: "2019-04-05T09:15:52.717Z"
+                  approvedAt: "2019-04-05T09:15:52.656Z"
+                requirement: "SERVICE_PARTNERS_VENDORS"
+                details: "some details about this opportunity"
+                createdBy:
+                  _id: "5c9efdde0bb9defc9c218c65"
+                  firstName: "Udit"
+                  lastName: "Jain"
+                  email: "jainudit.012@gmail.com"
+                  emailVerified: true
+                  profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                  fullName: "Udit Jain"
+                  sub: "linkedin|oP4sPrYxft"
+                  purpose: "my purpose is this?"
+                  brief: "my brief"
+                  isAdmin: true
+                  isFormFilled: true
+                  isActive: true
+                  createdAt: "2019-03-30T05:25:50.413Z"
+                  updatedAt: "2019-04-01T09:38:11.109Z"
+                createdAt: "2019-04-08T09:31:40.155Z"
+                updatedAt: "2019-04-08T09:31:40.155Z"
+                _id: "5cab14fc70095b559d5eda4a"
+        400:
+          description: "Wrong or Bad Data. Wrong data in request body or not an approved\
+            \ project."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Project Has to be Approved to create an Opportunity!"
+        401:
+          description: "Not Logged In or Project Not created by You."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Not Logged In!"
+        404:
+          description: "Could not find the Project or the User"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could Not find the Project!"
+        500:
+          description: "Opportunity Creation Error"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could Not Create the Opportunity Post!"
+      x-swagger-router-controller: "Default"
+  /opportunities/{opportunityId}//:
+    put:
+      description: "Edits Project if User is the Creator or Admin."
+      operationId: "opportunitiesOpportunityIdPUT"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      - name: "opportunityId"
+        in: "path"
+        description: "Id of the Opportunity that is to be changed"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "Opportunity"
+        description: "The Opportunity Data that is to be changed."
+        required: false
+        schema:
+          $ref: "#/definitions/Opportunity_1"
+      responses:
+        200:
+          description: "Edits the Opportunity."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              msg:
+                type: "string"
+              opportunity:
+                type: "object"
+                properties: {}
+            example:
+              error: false
+              msg: "Opportunity Successfully Updated."
+              opportunity:
+                opportunity:
+                  _id: "5cab14fc70095b559d5eda4a"
+                  project:
+                    _id: "5ca48422b7b102e96f3fae9b"
+                    projectName: "Universe's Model"
+                    projectNature: "SERVICE"
+                    sector: "EDUCATION"
+                    startupStage: "IDEA"
+                    teamSize: "10"
+                    acceptingFunds: true
+                    pitch: "my pitch for this project that will make it a success."
+                    problemSolvingDescription: "my description"
+                    createdBy:
+                      _id: "5c9efdde0bb9defc9c218c65"
+                      firstName: "Udit"
+                      lastName: "Jain"
+                      email: "jainudit.012@gmail.com"
+                      emailVerified: true
+                      profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                      fullName: "Udit Jain"
+                      sub: "linkedin|oP4sPrYxft"
+                      purpose: "my purpose is this?"
+                      brief: "my brief"
+                      isAdmin: true
+                      isFormFilled: true
+                      isActive: true
+                      createdAt: "2019-03-30T05:25:50.413Z"
+                      updatedAt: "2019-04-01T09:38:11.109Z"
+                    isApproved: true
+                    createdByName: "Udit Jain"
+                    projectApprovalStatus: "Approved"
+                    createdAt: "2019-04-03T10:00:02.116Z"
+                    updatedAt: "2019-04-05T09:15:52.717Z"
+                    approvedAt: "2019-04-05T09:15:52.656Z"
+                  requirement: "SERVICE_PARTNERS_VENDORS"
+                  details: "some details are changed "
+                  createdBy:
+                    _id: "5c9efdde0bb9defc9c218c65"
+                    firstName: "Udit"
+                    lastName: "Jain"
+                    email: "jainudit.012@gmail.com"
+                    emailVerified: true
+                    profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                    fullName: "Udit Jain"
+                    sub: "linkedin|oP4sPrYxft"
+                    purpose: "my purpose is this?"
+                    brief: "my brief"
+                    isAdmin: true
+                    isFormFilled: true
+                    isActive: true
+                    createdAt: "2019-03-30T05:25:50.413Z"
+                    updatedAt: "2019-04-01T09:38:11.109Z"
+                  createdAt: "2019-04-08T09:31:40.155Z"
+                  updatedAt: "2019-04-08T09:32:46.174Z"
+        400:
+          description: "Bad data in the request Body. Invalid id or requirement."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "The Project Is not Approved!"
+        401:
+          description: "Not Logged In or not the creator."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Opportunity Post is Not created by You!"
+        404:
+          description: "Could not find the Project or the Opportunity ."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could Not find the Specified Opportunity Data!"
+        500:
+          description: "Updation Error in Opportunity."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could Not Update the Opportunity!"
+      x-swagger-router-controller: "Default"
+    delete:
+      description: "Deletes the Opportunity."
+      operationId: "opportunitiesOpportunityIdDELETE"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      - name: "opportunityId"
+        in: "path"
+        description: "Id of the Opportunity that is to be deleted"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successfully Deletes the Project"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              msg:
+                type: "string"
+              opportunity:
+                type: "object"
+                properties: {}
+            example:
+              error: false
+              msg: "Successfully deleted the Opportunity."
+              opportunity: {}
+        401:
+          description: "User is not logged in or the Opportunity is not created by\
+            \ the User."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Not Logged In!"
+        404:
+          description: "Could not find the Opportunity"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could Not find the Specified Opportunity Data!"
+        500:
+          description: "Failed to delete the Opportunity"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could Not delete the Opportunity!"
+      x-swagger-router-controller: "Default"
+  /opportunities/getInTouch/{opportunityId}:
+    post:
+      description: "Sends Get In Touch Form for Opportunity."
+      operationId: "opportunitiesGetInTouchOpportunityIdPOST"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      - name: "opportunityId"
+        in: "path"
+        description: "Id of the Opportunity for which the form is to be sent"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "Body"
+        description: "The Get in Touch Data in request body."
+        required: true
+        schema:
+          $ref: "#/definitions/Body_2"
+      responses:
+        200:
+          description: "Successfully Sent notification to Project/Opportunity Creator\
+            \ and created form data."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              msg:
+                type: "string"
+            example:
+              error: false
+              msg: "Successfully Notified the Creator."
+        400:
+          description: "Bad request. Incorrect Data Value."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "User Type is to be Provided!"
+        401:
+          description: "Not Logged In."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "You are not logged In!"
+        404:
+          description: "No Creator or No such Project found In Database"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could Not find the Project!"
+        500:
+          description: "Form creation Error  or Exception Error"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could not create the Get in touch Form!"
+      x-swagger-router-controller: "Default"
+  /funds:
+    get:
+      description: "Get All the Approved Funds or All Funds if Admin"
+      operationId: "fundsGET"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      - name: "limit"
+        in: "query"
+        description: "Limits number of documents returned"
+        required: false
+        type: "string"
+      - name: "offset"
+        in: "query"
+        description: "No. of documents to skip"
+        required: false
+        type: "string"
+      - name: "sector"
+        in: "query"
+        required: false
+        type: "string"
+        enum:
+        - "HEALTHCARE_FITNESS"
+        - "FIN_TECH"
+        - "E_COMMERCE"
+        - "CONSUMER"
+        - "FOOD"
+        - "EDUCATION"
+        - "HR"
+      - name: "investorType"
+        in: "query"
+        required: false
+        type: "string"
+        enum:
+        - "INDIVIDUAL_INVESTOR"
+        - "INCUBATOR"
+        - "FAMILY"
+        - "ANGEL_NETWORK"
+      responses:
+        200:
+          description: "Returns list of All the Funds"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              funds:
+                type: "array"
+                items:
+                  type: "object"
+                  properties: {}
+            example:
+              error: false
+              funds:
+              - _id: "5bfc14f6f3510c0308f63005"
+                investorType: "INDIVIDUAL_INVESTOR"
+                fundName: "Rahul's Test Fund"
+                sector: "FOOD"
+                preferredStartupStage: "MVP"
+                fundCurrency: "INR"
+                fundValue: 30000
+                createdBy: "auth0|5bfa6049fd7df44d2a62ce14"
+              - _id: "5cac89a668367698b0333601"
+                investorType: "ANGEL_NETWORK"
+                fundName: "VISION Fund"
+                preferredStartupStage: "MVP"
+                createdBy:
+                  _id: "5c9efdde0bb9defc9c218c65"
+                  firstName: "Udit"
+                  lastName: "Jain"
+                  email: "jainudit.012@gmail.com"
+                  emailVerified: true
+                  profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                  fullName: "Udit Jain"
+                  sub: "linkedin|oP4sPrYxft"
+                  purpose: "this is the new purpose 2.0"
+                  brief: "my brief"
+                  isAdmin: true
+                  isActive: true
+                  createdAt: "2019-03-30T05:25:50.413Z"
+                  updatedAt: "2019-04-06T09:31:23.942Z"
+                linkedInProfile: "www.linkedin.com/?profile=jdkwe99jdow"
+                contact: "9090909078"
+                createdAt: "2019-04-09T12:01:42.163Z"
+                updatedAt: "2019-04-09T12:02:19.625Z"
+        404:
+          description: "No Funds Found"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could not find any Funds!"
+      x-swagger-router-controller: "Default"
+    post:
+      description: "Creates A new Fund Listing"
+      operationId: "fundsPOST"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "Fund"
+        description: "The Fund Data from the User in request Body."
+        required: true
+        schema:
+          $ref: "#/definitions/Fund"
+      responses:
+        200:
+          description: "Fund Added but under Approval"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              msg:
+                type: "string"
+              fund:
+                type: "object"
+                properties: {}
+            example:
+              error: false
+              msg: "Fund has been Added. Under Approval"
+              fund:
+                investorType: "ANGEL_NETWORK"
+                preferredStartupStage: "MVP"
+                createdBy:
+                  _id: "5c9efdde0bb9defc9c218c65"
+                  firstName: "Udit"
+                  lastName: "Jain"
+                  email: "jainudit.012@gmail.com"
+                  emailVerified: true
+                  profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                  fullName: "Udit Jain"
+                  sub: "linkedin|oP4sPrYxft"
+                  purpose: "this is the new purpose 2.0"
+                  brief: "my brief"
+                  isAdmin: false
+                  isActive: true
+                  createdAt: "2019-03-30T05:25:50.413Z"
+                  updatedAt: "2019-04-06T09:31:23.942Z"
+                isApproved: false
+                linkedInProfile: "www.linkedin.com/?profile=2190jkwq"
+                contact: "8329829389"
+                createdAt: "2019-04-10T12:24:27.931Z"
+                updatedAt: "2019-04-10T12:24:27.931Z"
+                _id: "5cade07b3b9bf3b6d8270fe7"
+        400:
+          description: "Bad request. Missing Some Fields."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Investor type can only be 'INDIVIDUAL_INVESTOR, INCUBATOR,\
+                \ FAMILY or ANGEL_NETWORK!'"
+        401:
+          description: "If user is not Logged in or no token Provided."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "You have to be Logged in to list your Funds!"
+        404:
+          description: "No User found In Database"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could not find the User!"
+        500:
+          description: "Could not save the document"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could not Save Your Fund!"
+      x-swagger-router-controller: "Default"
+  /funds/{userId}:
+    get:
+      description: "Gets List Of fund Created by the User"
+      operationId: "fundsUserIdGET"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      - name: "userId"
+        in: "path"
+        description: "User Id whose Projects Are to be shown"
+        required: true
+        type: "string"
+      - name: "limit"
+        in: "query"
+        description: "Limits number of documents returned"
+        required: false
+        type: "string"
+      - name: "offset"
+        in: "query"
+        description: "No. of documents to skip"
+        required: false
+        type: "string"
+      - name: "sector"
+        in: "query"
+        required: false
+        type: "string"
+        enum:
+        - "HEALTHCARE_FITNESS"
+        - "FIN_TECH"
+        - "E_COMMERCE"
+        - "CONSUMER"
+        - "FOOD"
+        - "EDUCATION"
+        - "HR"
+      - name: "investorType"
+        in: "query"
+        required: false
+        type: "string"
+        enum:
+        - "INDIVIDUAL_INVESTOR"
+        - "INCUBATOR"
+        - "FAMILY"
+        - "ANGEL_NETWORK"
+      responses:
+        200:
+          description: "Returns list of All the Funds of the User"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              funds:
+                type: "array"
+                items:
+                  type: "object"
+                  properties: {}
+            example:
+              error: false
+              funds:
+              - _id: "5cac785249b2d991ef647c2e"
+                investorType: "FAMILY"
+                fundName: "BASIC funds"
+                preferredStartupStage: "IDEA"
+                createdBy:
+                  _id: "5c9efdde0bb9defc9c218c65"
+                  firstName: "Udit"
+                  lastName: "Jain"
+                  email: "jainudit.012@gmail.com"
+                  emailVerified: true
+                  profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                  fullName: "Udit Jain"
+                  sub: "linkedin|oP4sPrYxft"
+                  purpose: "this is the new purpose 2.0"
+                  brief: "my brief"
+                  isAdmin: true
+                  isActive: true
+                  createdAt: "2019-03-30T05:25:50.413Z"
+                  updatedAt: "2019-04-06T09:31:23.942Z"
+                isApproved: false
+                linkedInProfile: "www.linkedin.com/?profile=0e-02lkdlw"
+                contact: "8329482384"
+                createdAt: "2019-04-09T10:47:46.626Z"
+                updatedAt: "2019-04-09T10:47:46.626Z"
+              - _id: "5cac89a668367698b0333601"
+                investorType: "ANGEL_NETWORK"
+                fundName: "VISION Fund"
+                preferredStartupStage: "MVP"
+                createdBy:
+                  _id: "5c9efdde0bb9defc9c218c65"
+                  firstName: "Udit"
+                  lastName: "Jain"
+                  email: "jainudit.012@gmail.com"
+                  emailVerified: true
+                  profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                  fullName: "Udit Jain"
+                  sub: "linkedin|oP4sPrYxft"
+                  purpose: "this is the new purpose 2.0"
+                  brief: "my brief"
+                  isAdmin: true
+                  isActive: true
+                  createdAt: "2019-03-30T05:25:50.413Z"
+                  updatedAt: "2019-04-06T09:31:23.942Z"
+                isApproved: true
+                linkedInProfile: "www.linkedin.com/?profile=jdkwe99jdow"
+                contact: "9090909078"
+                createdAt: "2019-04-09T12:01:42.163Z"
+                updatedAt: "2019-04-09T12:02:19.625Z"
+        401:
+          description: "No token provided. User has public access."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "You must be Logged In!"
+        403:
+          description: "Id in the token does not match with the fund creator. Or not\
+            \ admin."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Not Correct Permissions!"
+        404:
+          description: "Could not find any funds or User"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could not find any Funds!"
+      x-swagger-router-controller: "Default"
+  /funds/{fundId}/:
+    put:
+      description: "Edits the Fund Details if user is the creator"
+      operationId: "fundsFundIdPUT"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      - name: "fundId"
+        in: "path"
+        description: "Id of the Fund that is to be changed"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "Fund"
+        description: "The Fund Data that is to be changed."
+        required: false
+        schema:
+          $ref: "#/definitions/Fund_1"
+      responses:
+        200:
+          description: "Updated the Fund"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              msg:
+                type: "string"
+              fund:
+                type: "object"
+                properties: {}
+            example:
+              error: false
+              msg: "Successfully Updated the Fund"
+              fund:
+                _id: "5cade07b3b9bf3b6d8270fe7"
+                investorType: "INCUBATOR"
+                preferredStartupStage: "MVP"
+                createdBy:
+                  _id: "5c9efdde0bb9defc9c218c65"
+                  firstName: "Udit"
+                  lastName: "Jain"
+                  email: "jainudit.012@gmail.com"
+                  emailVerified: true
+                  profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                  fullName: "Udit Jain"
+                  sub: "linkedin|oP4sPrYxft"
+                  purpose: "this is the new purpose 2.0"
+                  brief: "my brief"
+                  isAdmin: false
+                  isActive: true
+                  createdAt: "2019-03-30T05:25:50.413Z"
+                  updatedAt: "2019-04-06T09:31:23.942Z"
+                isApproved: false
+                linkedInProfile: "www.linkedin.com/?profile=2190jkwq"
+                contact: "8329829389"
+                createdAt: "2019-04-10T12:24:27.931Z"
+                updatedAt: "2019-04-10T12:24:27.931Z"
+        400:
+          description: "Error in data values passed in the body"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Fund Currency Allowed Values are 'USD, INR, EUR, GBP, CNY,\
+                \ JPY'"
+        401:
+          description: "User not the fund creator or not logged in"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Fund is not created by You!"
+        404:
+          description: "Could not find the Fund"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could Not find the Find you were Looking For!"
+        500:
+          description: "Error in updating the Fund"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could not Update the Fund!"
+      x-swagger-router-controller: "Default"
+    delete:
+      description: "Deletes the fund If user is the Creator"
+      operationId: "fundsFundIdDELETE"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      - name: "fundId"
+        in: "path"
+        description: "Id of the Fund that is to be changed"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Deletes the Fund"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              msg:
+                type: "string"
+              fund:
+                type: "object"
+                properties: {}
+            example:
+              error: false
+              msg: "Successfully Removed Your Fund"
+              fund: {}
+        400:
+          description: "Fund is approved and cannot be deleted"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Fund cannot be deleted once Approved!"
+        401:
+          description: "Fund not createed by the user"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Fund is not created by You!"
+        404:
+          description: "Could not find the specified fund"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could Not find the Find you were Looking For!"
+        500:
+          description: "Fund deletion Failed"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could not delete the fund!"
+      x-swagger-router-controller: "Default"
+  /funds/apply/{fundId}:
+    post:
+      description: "User Applies for a particular Fund"
+      operationId: "fundsApplyFundIdPOST"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      - name: "fundId"
+        in: "path"
+        description: "Id of the Fund that is to be applied for"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "Body"
+        description: "The Application form in the request body."
+        required: true
+        schema:
+          $ref: "#/definitions/Body_3"
+      responses:
+        200:
+          description: "Successfully recorded the response from the User"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              msg:
+                type: "string"
+              application:
+                type: "object"
+                properties: {}
+            example:
+              error: false
+              msg: "Successfully Recorded Your Response"
+              application:
+                companyValuation: "50000000"
+                createdBy:
+                  _id: "5c9efdde0bb9defc9c218c65"
+                  firstName: "Udit"
+                  lastName: "Jain"
+                  email: "jainudit.012@gmail.com"
+                  emailVerified: true
+                  profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                  fullName: "Udit Jain"
+                  sub: "linkedin|oP4sPrYxft"
+                  purpose: "this is the new purpose 2.0"
+                  brief: "my brief"
+                  isAdmin: false
+                  isActive: true
+                  createdAt: "2019-03-30T05:25:50.413Z"
+                  updatedAt: "2019-04-06T09:31:23.942Z"
+                fund:
+                  _id: "5cac89a668367698b0333601"
+                  investorType: "ANGEL_NETWORK"
+                  fundName: "VISION Fund"
+                  preferredStartupStage: "MVP"
+                  createdBy:
+                    _id: "5c9efdde0bb9defc9c218c65"
+                    firstName: "Udit"
+                    lastName: "Jain"
+                    email: "jainudit.012@gmail.com"
+                    emailVerified: true
+                    profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                    fullName: "Udit Jain"
+                    sub: "linkedin|oP4sPrYxft"
+                    purpose: "this is the new purpose 2.0"
+                    brief: "my brief"
+                    isAdmin: true
+                    isActive: true
+                    createdAt: "2019-03-30T05:25:50.413Z"
+                    updatedAt: "2019-04-06T09:31:23.942Z"
+                  isApproved: true
+                  linkedInProfile: "www.linkedin.com/?profile=jdkwe99jdow"
+                  contact: "9090909078"
+                  createdAt: "2019-04-09T12:01:42.163Z"
+                  updatedAt: "2019-04-09T12:02:19.625Z"
+                fundingAmount: "1000000"
+                message: "some message for the investor"
+                project:
+                  _id: "5ca48422b7b102e96f3fae9b"
+                  projectName: "Universe's Model"
+                  projectNature: "SERVICE"
+                  sector: "EDUCATION"
+                  startupStage: "IDEA"
+                  teamSize: "10"
+                  acceptingFunds: true
+                  pitch: "my pitch for this project that will make it a success."
+                  problemSolvingDescription: "my description"
+                  createdBy:
+                    _id: "5c9efdde0bb9defc9c218c65"
+                    firstName: "Udit"
+                    lastName: "Jain"
+                    email: "jainudit.012@gmail.com"
+                    emailVerified: true
+                    profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                    fullName: "Udit Jain"
+                    sub: "linkedin|oP4sPrYxft"
+                    purpose: "my purpose is this?"
+                    brief: "my brief"
+                    isAdmin: true
+                    isFormFilled: true
+                    isActive: true
+                    createdAt: "2019-03-30T05:25:50.413Z"
+                    updatedAt: "2019-04-01T09:38:11.109Z"
+                  isApproved: true
+                  createdByName: "Udit Jain"
+                  projectApprovalStatus: "Approved"
+                  createdAt: "2019-04-03T10:00:02.116Z"
+                  updatedAt: "2019-04-09T13:49:35.032Z"
+                  approvedAt: "2019-04-05T09:15:52.656Z"
+                pdfLink: "https://upload-pdf-cofnders.s3.ap-southeast-1.amazonaws.com/hqtRpI82scB5YGcsoVG.pdf"
+                _id: "5cadedcb82c80ab77f18b0de"
+        400:
+          description: "Already sent a response or project id incorrect or data missing\
+            \ in request body."
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Already Sent Your Response!"
+        404:
+          description: "Could not find the fund or the user(logged in)"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could Not find the Fund you were Looking For!"
+        500:
+          description: "Could not save the Application or unable to upload the PDF\
+            \ file"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could Not Upload File"
+      x-swagger-router-controller: "Default"
+  /funds/approve/{fundId}:
+    put:
+      description: "Approves the Fund if the User is Admin"
+      operationId: "fundsApproveFundIdPUT"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: true
+        type: "string"
+      - name: "fundId"
+        in: "path"
+        description: "Id of the Fund that is to be applied for"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Approves the fund"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              msg:
+                type: "string"
+              fund:
+                type: "object"
+                properties: {}
+            example:
+              error: false
+              msg: "Successfully Approved the Fund!"
+              fund:
+                _id: "5cade07b3b9bf3b6d8270fe7"
+                investorType: "INCUBATOR"
+                preferredStartupStage: "MVP"
+                createdBy:
+                  _id: "5c9efdde0bb9defc9c218c65"
+                  firstName: "Udit"
+                  lastName: "Jain"
+                  email: "jainudit.012@gmail.com"
+                  emailVerified: true
+                  profilePicture: "https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY"
+                  fullName: "Udit Jain"
+                  sub: "linkedin|oP4sPrYxft"
+                  purpose: "this is the new purpose 2.0"
+                  brief: "my brief"
+                  isAdmin: false
+                  isActive: true
+                  createdAt: "2019-03-30T05:25:50.413Z"
+                  updatedAt: "2019-04-06T09:31:23.942Z"
+                isApproved: true
+                linkedInProfile: "www.linkedin.com/?profile=2190jkwq"
+                contact: "8329829389"
+                createdAt: "2019-04-10T12:24:27.931Z"
+                updatedAt: "2019-04-10T12:43:03.211Z"
+        403:
+          description: "User is not Admin. Not correct Credentials"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "You do not have the Permissions!"
+        404:
+          description: "Could not find the Logged in User or the Specified Fund"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could Not find the Fund you were Looking For!"
+        500:
+          description: "Could not update the Fund"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              reason:
+                type: "string"
+            example:
+              error: true
+              reason: "Could not Approve the Fund!"
+      x-swagger-router-controller: "Default"
+definitions:
+  inline_response_403_1:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=You do not have Correct Permissions!}"
+  inline_response_401_3:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Must be Logged In!}"
+  inline_response_401_2:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Cannot create Project. Must be logged in!}"
+  inline_response_500_11:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could not Approve the Fund!}"
+  inline_response_401_5:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=You have to be logged In.}"
+  inline_response_403_3:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Not Correct Permissions!}"
+  inline_response_500_10:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could Not Upload File}"
+  inline_response_401_4:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=You are not Logged in!}"
+  inline_response_403_2:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Not An Admin!}"
+  inline_response_401_7:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=You are not logged In!}"
+  inline_response_401_6:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Opportunity Post is Not created by You!}"
+  inline_response_403_4:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=You do not have the Permissions!}"
+  inline_response_401_9:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=You must be Logged In!}"
+  inline_response_401_8:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=You have to be Logged in to list your Funds!}"
+  inline_response_401_10:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Fund is not created by You!}"
+  inline_response_404_10:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could Not find the Fund you were Looking For!}"
+  Body_3:
+    type: "object"
+    properties:
+      projectId:
+        type: "string"
+      amount:
+        type: "string"
+      valuation:
+        type: "string"
+      message:
+        type: "string"
+      pdf:
+        type: "string"
+    example:
+      projectId: "5ca48422b7b102e96f3fae9b"
+      amount: 1000000
+      valuation: 50000000
+      message: "some message for the investor"
+      pdf: "iVBORw0KGgoAAAANSUhEUgAAA14AAANeCAYAAAF13+9kAAAABGdBTUEAALGPC/xhBQAAAVlpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IlhNUCBDb3JlIDUuNC4wIj4KICAgPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICAgICAgPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIKICAgICAgICAgICAgeG1sbnM6dGlmZj0iaHR0cDovL25zLmFkb2JlLmNvbS90aWZmLzEuMC8iPgogICAgICAgICA8dGlmZjpPcmllbnRhdGlvbj4xPC90aWZmOk9yaWVudGF0aW9uPgogICAgICA8L3JkZjpEZXNjcmlwdGlvbj4KICAgPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KTMInWQAAQABJREFUeAHsnQX8NEX5wOelu7u7X0BQRP6UhCAlCII0SAjSIS1IC9IhSgjSSghKC0p3p9Kd0p33n2dljt29nb3dvb275+a+8/n8frszO/E832fnno3ZmRENGwxhYAiMMjCSImhEAIMN2ImAwTDYgBEYMHHpYRhswAgMmLj0MAw2YAQGTFx6GAYbMAIDJi49DIMNGIEBE5cehsEGjMCAiUsPw2ADRmDAxKWHYbABIzBg4tLDMNiAERgwcelhGGzACAyYuPQwDDZgBAZMXHoYBhswAgMmLj0Mgw0YgQETlx6GwQaMwICJSw/DYANGYMDEpYdhsAEjMGDi0sMw2IARGDBx6WEYbMAIDJi49DAMNmAEBkxcehgGGzACFcW9+uqrzYgRIyqWrl5stOpFs0u2U2KBBRYw999/f3bhAUltp6NPDSn3/vvvm/HHH99UnTGqNoMVVeKBBx6IzsyqAvtgaE+/+eabm0bqRPcRtnDHk4PlGWucccYxH330USbPGprOrLfbiXF9e61DbT0sDilPibiysp+XN14n+/8j0PFVYtwAUmU7A7z11lu57F9//XVz8sknm0MPPbRtXVLRjjvuGP3EihyjjDKKaVf/p59+ag455BBz5513euW45pprzL777muef/55b568AyL/M888k5el+jELuKNgW5af1OivaEUuf5mt9QGJ6ouUdQVGHXXUpoxZ5S"
+  inline_response_500:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could not Update the Profile!}"
+  inline_response_401_1:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Expired Token!}"
+  Body_2:
+    type: "object"
+    properties:
+      userType:
+        type: "string"
+        enum:
+        - "Investor"
+        - "Mentor"
+        - "Consulting_Firm"
+        - "IT_Services"
+        - "Investment_Advisor"
+        - "Startup_Founder"
+      linkedInLink:
+        type: "string"
+      message:
+        type: "string"
+    example:
+      userType: "Mentor"
+      linkedInLink: "www.linkedin.com/?profile=10903213ekk92d"
+      message: "some message in get in touch form"
+  Body_1:
+    type: "object"
+    properties:
+      userType:
+        type: "string"
+        enum:
+        - "Investor"
+        - "Mentor"
+        - "Consulting_Firm"
+        - "IT_Services"
+        - "Investment_Advisor"
+        - "Startup_Founder"
+      linkedInLink:
+        type: "string"
+      message:
+        type: "string"
+    example:
+      userType: "Mentor"
+      linkedInLink: "www.linkedin.com/?profile=10903213ekk92d"
+      message: "some message in get in touch form"
+  inline_response_200_9:
+    properties:
+      error:
+        type: "boolean"
+      project:
+        type: "object"
+        properties: {}
+      msg:
+        type: "string"
+    example: "{error=false, project={}, msg=Successfully Deleted the Project.}"
+  inline_response_200_22:
+    properties:
+      error:
+        type: "boolean"
+      msg:
+        type: "string"
+      fund:
+        type: "object"
+        properties: {}
+    example: "{error=false, msg=Successfully Removed Your Fund, fund={}}"
+  inline_response_200_21:
+    properties:
+      error:
+        type: "boolean"
+      msg:
+        type: "string"
+      fund:
+        type: "object"
+        properties: {}
+    example: "{error=false, msg=Successfully Updated the Fund, fund={_id=5cade07b3b9bf3b6d8270fe7,\
+      \ investorType=INCUBATOR, preferredStartupStage=MVP, createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose\
+      \ 2.0, brief=my brief, isAdmin=false, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-06T09:31:23.942Z}, isApproved=false, linkedInProfile=www.linkedin.com/?profile=2190jkwq,\
+      \ contact=8329829389, createdAt=2019-04-10T12:24:27.931Z, updatedAt=2019-04-10T12:24:27.931Z}}"
+  inline_response_200_24:
+    properties:
+      error:
+        type: "boolean"
+      msg:
+        type: "string"
+      fund:
+        type: "object"
+        properties: {}
+    example: "{error=false, msg=Successfully Approved the Fund!, fund={_id=5cade07b3b9bf3b6d8270fe7,\
+      \ investorType=INCUBATOR, preferredStartupStage=MVP, createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose\
+      \ 2.0, brief=my brief, isAdmin=false, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-06T09:31:23.942Z}, isApproved=true, linkedInProfile=www.linkedin.com/?profile=2190jkwq,\
+      \ contact=8329829389, createdAt=2019-04-10T12:24:27.931Z, updatedAt=2019-04-10T12:43:03.211Z}}"
+  inline_response_200_23:
+    properties:
+      error:
+        type: "boolean"
+      msg:
+        type: "string"
+      application:
+        type: "object"
+        properties: {}
+    example: "{error=false, msg=Successfully Recorded Your Response, application={companyValuation=50000000,\
+      \ createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com,\
+      \ emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose\
+      \ 2.0, brief=my brief, isAdmin=false, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-06T09:31:23.942Z}, fund={_id=5cac89a668367698b0333601, investorType=ANGEL_NETWORK,\
+      \ fundName=VISION Fund, preferredStartupStage=MVP, createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose\
+      \ 2.0, brief=my brief, isAdmin=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-06T09:31:23.942Z}, isApproved=true, linkedInProfile=www.linkedin.com/?profile=jdkwe99jdow,\
+      \ contact=9090909078, createdAt=2019-04-09T12:01:42.163Z, updatedAt=2019-04-09T12:02:19.625Z},\
+      \ fundingAmount=1000000, message=some message for the investor, project={_id=5ca48422b7b102e96f3fae9b,\
+      \ projectName=Universe's Model, projectNature=SERVICE, sector=EDUCATION, startupStage=IDEA,\
+      \ teamSize=10, acceptingFunds=true, pitch=my pitch for this project that will\
+      \ make it a success., problemSolvingDescription=my description, createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
+      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-01T09:38:11.109Z}, isApproved=true, createdByName=Udit Jain,\
+      \ projectApprovalStatus=Approved, createdAt=2019-04-03T10:00:02.116Z, updatedAt=2019-04-09T13:49:35.032Z,\
+      \ approvedAt=2019-04-05T09:15:52.656Z}, pdfLink=https://upload-pdf-cofnders.s3.ap-southeast-1.amazonaws.com/hqtRpI82scB5YGcsoVG.pdf,\
+      \ _id=5cadedcb82c80ab77f18b0de}}"
+  inline_response_200_5:
+    properties:
+      error:
+        type: "boolean"
+      project:
+        type: "object"
+        properties: {}
+      msg:
+        type: "string"
+    example: "{error=false, project={projectName=Start Universe, projectNature=SERVICE,\
+      \ sector=EDUCATION, startupStage=IDEA, teamSize=10, acceptingFunds=true, pitch=my\
+      \ pitch for this project that will make it a success., problemSolvingDescription=my\
+      \ description, createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain,\
+      \ email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
+      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-01T09:38:11.109Z}, isApproved=false, createdByName=Udit\
+      \ Jain, projectApprovalStatus=ADDED, createdAt=2019-04-03T10:00:02.116Z, updatedAt=2019-04-03T10:00:02.116Z,\
+      \ _id=5ca48422b7b102e96f3fae9b}, msg=New Project Successfully Created.}"
+  inline_response_200_6:
+    properties:
+      error:
+        type: "boolean"
+      projects:
+        type: "object"
+        properties: {}
+    example: "{error=false, projects=[{_id=5ca48422b7b102e96f3fae9b, projectName=Universe's\
+      \ Model, projectNature=SERVICE, sector=EDUCATION, startupStage=IDEA, teamSize=10,\
+      \ acceptingFunds=true, pitch=my pitch for this project that will make it a success.,\
+      \ problemSolvingDescription=my description, createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
+      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-01T09:38:11.109Z}, isApproved=true, createdByName=Udit Jain,\
+      \ projectApprovalStatus=Approved, createdAt=2019-04-03T10:00:02.116Z, updatedAt=2019-04-03T10:45:52.752Z},\
+      \ {_id=5ca494686839789fccd3f25b, projectName=Start Universe, projectNature=SERVICE,\
+      \ sector=EDUCATION, startupStage=IDEA, teamSize=10, acceptingFunds=true, pitch=my\
+      \ pitch for this project that will make it a success., problemSolvingDescription=my\
+      \ description, createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain,\
+      \ email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
+      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-01T09:38:11.109Z}, isApproved=true, createdByName=Udit Jain,\
+      \ projectApprovalStatus=Approved, createdAt=2019-04-03T11:09:28.147Z, updatedAt=2019-04-03T11:09:28.147Z}]}"
+  inline_response_200_7:
+    properties:
+      error:
+        type: "boolean"
+      projects:
+        type: "object"
+        properties: {}
+    example: "{error=false, projects=[{_id=5ca48422b7b102e96f3fae9b, projectName=Universe's\
+      \ Model, projectNature=SERVICE, sector=EDUCATION, startupStage=IDEA, teamSize=10,\
+      \ acceptingFunds=true, pitch=my pitch for this project that will make it a success.,\
+      \ problemSolvingDescription=my description, createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
+      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-01T09:38:11.109Z}, isApproved=false, createdByName=Udit\
+      \ Jain, projectApprovalStatus=IN_REVIEW, createdAt=2019-04-03T10:00:02.116Z,\
+      \ updatedAt=2019-04-03T10:45:52.752Z}, {_id=5ca494686839789fccd3f25b, projectName=Start\
+      \ Universe, projectNature=SERVICE, sector=EDUCATION, startupStage=IDEA, teamSize=10,\
+      \ acceptingFunds=true, pitch=my pitch for this project that will make it a success.,\
+      \ problemSolvingDescription=my description, createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
+      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-01T09:38:11.109Z}, isApproved=false, createdByName=Udit\
+      \ Jain, projectApprovalStatus=ADDED, createdAt=2019-04-03T11:09:28.147Z, updatedAt=2019-04-03T11:09:28.147Z}]}"
+  inline_response_200_20:
+    properties:
+      error:
+        type: "boolean"
+      funds:
+        type: "array"
+        items:
+          type: "object"
+          properties: {}
+    example: "{error=false, funds=[{_id=5cac785249b2d991ef647c2e, investorType=FAMILY,\
+      \ fundName=BASIC funds, preferredStartupStage=IDEA, createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose\
+      \ 2.0, brief=my brief, isAdmin=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-06T09:31:23.942Z}, isApproved=false, linkedInProfile=www.linkedin.com/?profile=0e-02lkdlw,\
+      \ contact=8329482384, createdAt=2019-04-09T10:47:46.626Z, updatedAt=2019-04-09T10:47:46.626Z},\
+      \ {_id=5cac89a668367698b0333601, investorType=ANGEL_NETWORK, fundName=VISION\
+      \ Fund, preferredStartupStage=MVP, createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose\
+      \ 2.0, brief=my brief, isAdmin=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-06T09:31:23.942Z}, isApproved=true, linkedInProfile=www.linkedin.com/?profile=jdkwe99jdow,\
+      \ contact=9090909078, createdAt=2019-04-09T12:01:42.163Z, updatedAt=2019-04-09T12:02:19.625Z}]}"
+  inline_response_200_8:
+    properties:
+      error:
+        type: "boolean"
+      project:
+        type: "object"
+        properties: {}
+      msg:
+        type: "string"
+    example: "{error=false, project={_id=5ca48422b7b102e96f3fae9b, projectName=Universe's\
+      \ Model, projectNature=CAUSE, sector=EDUCATION, startupStage=IDEA, teamSize=10,\
+      \ pitch=my pitch for this project that will make it a success., acceptingFunds=true,\
+      \ isApproved=false, projectApprovalStatus=ADDED, problemSolvingDescription=my\
+      \ description, createdByName=Udit Jain, createdAt=2019-04-03T10:00:02.116Z,\
+      \ updatedAt=2019-04-03T10:00:02.116Z}, msg=Successfully Updated the Project.}"
+  inline_response_400_11:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Already Sent Your Response!}"
+  inline_response_400_10:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Fund cannot be deleted once Approved!}"
+  Project:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      category:
+        type: "string"
+        enum:
+        - "PRODUCT"
+        - "SERVICE"
+        - "CAUSE"
+        - "OTHERS"
+      sector:
+        type: "string"
+        enum:
+        - "HEALTHCARE_FITNESS"
+        - "FIN_TECH"
+        - "E_COMMERCE"
+        - "CONSUMER"
+        - "FOOD"
+        - "EDUCATION"
+        - "HR"
+      stage:
+        type: "string"
+        enum:
+        - "IDEA"
+        - "MVP"
+        - "GROWTH"
+        - "BETA"
+        - "GROWING"
+      teamSize:
+        type: "string"
+      acceptingFunds:
+        type: "boolean"
+      pitch:
+        type: "string"
+      problemSolvingDescription:
+        type: "string"
+      valueAddDescription:
+        type: "string"
+      websiteLink:
+        type: "string"
+      facebookLink:
+        type: "string"
+      linkedInLink:
+        type: "string"
+      twitterLink:
+        type: "string"
+      coverImage:
+        type: "string"
+      logo:
+        type: "string"
+    example:
+      name: "Start Universe"
+      category: "SERVICE"
+      sector: "EDUCATION"
+      stage: "IDEA"
+      teamSize: "10"
+      acceptingFunds: true
+      pitch: "my pitch for this project that will make it a success."
+      problemSolvingDescription: "my description"
+  inline_response_200_1:
+    properties:
+      error:
+        type: "boolean"
+      user:
+        type: "object"
+        properties: {}
+    example: "{error=false, user={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain,\
+      \ email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose, brief=thi\
+      \ is my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-03-30T06:25:13.266Z}}"
+  inline_response_200_2:
+    required:
+    - "token"
+    properties:
+      error:
+        type: "boolean"
+      token:
+        type: "string"
+      briefFilled:
+        type: "boolean"
+    example: "{error=false, token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOWVmZGRlMGJiOWRlZmM5YzIxOGM2NSIsImlzQWRtaW4iOmZhbHNlLCJ2ZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNTUzOTM0NTA2LCJleHAiOjE1NTM5NzA1MDZ9.ron2Gh--Jym8p_8Iqu4gbuo6rO1LE8DKzAdrezwIWKY}"
+  inline_response_200_3:
+    properties:
+      error:
+        type: "boolean"
+      user:
+        type: "object"
+        properties: {}
+    example: "{error=false, user={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain,\
+      \ email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose, brief=my\
+      \ brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-03-30T06:25:13.266Z}}"
+  inline_response_200_4:
+    properties:
+      error:
+        type: "boolean"
+      projects:
+        type: "array"
+        items:
+          type: "object"
+          properties: {}
+    example: "{error=false, projects=[{_id=5c9efdde0bb9defc9c218c65, firstName=Udit,\
+      \ lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose, brief=thi\
+      \ is my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-03-30T06:25:13.266Z}]}"
+  inline_response_400_4:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Status can be only IN_REVIEW, APPROVED or REJECTED}"
+  inline_response_200_11:
+    properties:
+      error:
+        type: "boolean"
+      msg:
+        type: "string"
+    example: "{error=false, msg=Successfully sent your Response.}"
+  Fund_1:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      description:
+        type: "string"
+      investorType:
+        type: "string"
+        enum:
+        - "INDIVIDUAL_INVESTOR"
+        - "INCUBATOR"
+        - "FAMILY"
+        - "ANGEL_NETWORK!"
+      contact:
+        type: "string"
+      linkedInLink:
+        type: "string"
+      startupStage:
+        type: "string"
+        enum:
+        - "IDEA"
+        - "MVP"
+        - "GROWTH"
+        - "BETA"
+        - "GROWING"
+      fundValue:
+        type: "string"
+      fundCurrency:
+        type: "string"
+        enum:
+        - "USD"
+        - "INR"
+        - "EUR"
+        - "GBP"
+        - "CNY"
+        - "JPY"
+    example:
+      investorType: "INCUBATOR"
+  inline_response_400_3:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Cannot Delete Once Project is Approved!}"
+  inline_response_200_10:
+    properties:
+      error:
+        type: "boolean"
+      project:
+        type: "object"
+        properties: {}
+      msg:
+        type: "string"
+    example: "{error=false, project={_id=5ca48422b7b102e96f3fae9b, projectName=Universe's\
+      \ Model, projectNature=SERVICE, sector=EDUCATION, startupStage=IDEA, teamSize=10,\
+      \ pitch=my pitch for this project that will make it a success., acceptingFunds=true,\
+      \ isApproved=false, projectApprovalStatus=IN_REVIEW, problemSolvingDescription=my\
+      \ description, createdByName=Udit Jain, createdAt=2019-04-03T10:00:02.116Z,\
+      \ updatedAt=2019-04-03T10:39:45.165Z}, msg=Successfully Updated Approval Status.}"
+  inline_response_404_2:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could not find any Projects!}"
+  inline_response_200_13:
+    properties:
+      error:
+        type: "boolean"
+      opportunities:
+        type: "array"
+        items:
+          type: "object"
+          properties: {}
+    example: "{error=false, opportunities=[{_id=5ca74add1731502cf285c8be, project={_id=5ca711af292627172e67c52e,\
+      \ projectName=Statistics, projectNature=SERVICE, sector=FIN_TECH, startupStage=MVP,\
+      \ teamSize=2, acceptingFunds=true, pitch=this product is amazing, createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose\
+      \ 2.0, brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-05T08:21:25.324Z}, isApproved=true, createdByName=Udit Jain,\
+      \ projectApprovalStatus=Approved, createdAt=2019-04-05T08:28:31.482Z, updatedAt=2019-04-05T12:32:24.720Z,\
+      \ responseCount=2, approvedAt=2019-04-05T09:02:46.910Z}, requirement=IDEA_VALIDATION,\
+      \ createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com,\
+      \ emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose\
+      \ 2.0, brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-05T08:21:25.324Z}, createdAt=2019-04-05T12:32:29.137Z, updatedAt=2019-04-08T09:29:41.632Z},\
+      \ {_id=5cab14fc70095b559d5eda4a, project={_id=5ca48422b7b102e96f3fae9b, projectName=Universe's\
+      \ Model, projectNature=SERVICE, sector=EDUCATION, startupStage=IDEA, teamSize=10,\
+      \ acceptingFunds=true, pitch=my pitch for this project that will make it a success.,\
+      \ problemSolvingDescription=my description, createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
+      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-01T09:38:11.109Z}, isApproved=true, createdByName=Udit Jain,\
+      \ projectApprovalStatus=Approved, createdAt=2019-04-03T10:00:02.116Z, updatedAt=2019-04-05T09:15:52.717Z,\
+      \ approvedAt=2019-04-05T09:15:52.656Z}, requirement=SERVICE_PARTNERS_VENDORS,\
+      \ details=some details are changed , createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
+      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-01T09:38:11.109Z}, createdAt=2019-04-08T09:31:40.155Z, updatedAt=2019-04-08T09:33:22.956Z}]}"
+  inline_response_400_6:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Project Has to be Approved to create an Opportunity!}"
+  User:
+    type: "object"
+    properties:
+      purpose:
+        type: "string"
+      brief:
+        type: "string"
+      userType:
+        type: "string"
+        enum:
+        - "Investor"
+        - "Mentor"
+        - "Consulting_Firm"
+        - "IT_Services"
+        - "Investment_Advisor"
+        - "Startup_Founder"
+      image:
+        type: "string"
+    example:
+      purpose: "my purpose"
+      brief: "this is my brief"
+  inline_response_404_1:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could not find the User!}"
+  inline_response_400_5:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=User Type is to be Provided!}"
+  inline_response_200_12:
+    properties:
+      error:
+        type: "boolean"
+      opportunities:
+        type: "array"
+        items:
+          type: "object"
+          properties: {}
+    example: "{error=false, opportunities=[{_id=5c63f50940f3e80874432194, projectId=5c63f42940f3e80874432193,\
+      \ requirement=IDEA_VALIDATION, specifics=https://www.linkedin.com/in/rahul-mamgain-70442521/},\
+      \ {_id=5ca74add1731502cf285c8be, project={_id=5ca711af292627172e67c52e, projectName=Statistics,\
+      \ pitch=this product is amazing, isApproved=true, createdByName=Udit Jain, projectApprovalStatus=Approved,\
+      \ createdAt=2019-04-05T08:28:31.482Z, updatedAt=2019-04-05T12:32:24.720Z, approvedAt=2019-04-05T09:02:46.910Z},\
+      \ requirement=IDEA_VALIDATION, createdBy={_id=5c9efdde0bb9defc9c218c65, email=jainudit.012@gmail.com,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, isActive=true, createdAt=2019-03-30T05:25:50.413Z, updatedAt=2019-04-05T08:21:25.324Z},\
+      \ createdAt=2019-04-05T12:32:29.137Z, updatedAt=2019-04-08T09:29:41.632Z}, {_id=5cab14fc70095b559d5eda4a,\
+      \ project={_id=5ca48422b7b102e96f3fae9b, projectName=Universe's Model, pitch=my\
+      \ pitch for this project that will make it a success., isApproved=true, createdByName=Udit\
+      \ Jain, projectApprovalStatus=Approved, createdAt=2019-04-03T10:00:02.116Z,\
+      \ updatedAt=2019-04-05T09:15:52.717Z, approvedAt=2019-04-05T09:15:52.656Z},\
+      \ requirement=SERVICE_PARTNERS_VENDORS, details=some details are changed , createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ email=jainudit.012@gmail.com, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, isActive=true, createdAt=2019-03-30T05:25:50.413Z, updatedAt=2019-04-01T09:38:11.109Z},\
+      \ createdAt=2019-04-08T09:31:40.155Z, updatedAt=2019-04-08T09:33:22.956Z}]}"
+  inline_response_404_4:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could Not find the Project!}"
+  Fund:
+    type: "object"
+    properties:
+      investorType:
+        type: "string"
+        enum:
+        - "INDIVIDUAL_INVESTOR"
+        - "INCUBATOR"
+        - "FAMILY"
+        - "ANGEL_NETWORK"
+      startupStage:
+        type: "string"
+        enum:
+        - "IDEA"
+        - "MVP"
+        - "GROWTH"
+        - "BETA"
+        - "GROWING"
+      contact:
+        type: "string"
+      linkedInLink:
+        type: "string"
+    example:
+      investorType: "ANGEL_NETWORK"
+      startupStage: "MVP"
+      contact: 8329829389
+      linkedInLink: "www.linkedin.com/?profile=2190jkwq"
+  inline_response_400_8:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Investor type can only be 'INDIVIDUAL_INVESTOR,\
+      \ INCUBATOR, FAMILY or ANGEL_NETWORK!'}"
+  inline_response_404_3:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=No User Found!}"
+  inline_response_400_7:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=The Project Is not Approved!}"
+  inline_response_404_6:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could not Find Any Opportunities!}"
+  inline_response_404_5:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could Not find Any Opportunities!}"
+  inline_response_400_9:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Fund Currency Allowed Values are 'USD, INR, EUR,\
+      \ GBP, CNY, JPY'}"
+  inline_response_404_8:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could not find any Funds!}"
+  inline_response_200_19:
+    properties:
+      error:
+        type: "boolean"
+      msg:
+        type: "string"
+      fund:
+        type: "object"
+        properties: {}
+    example: "{error=false, msg=Fund has been Added. Under Approval, fund={investorType=ANGEL_NETWORK,\
+      \ preferredStartupStage=MVP, createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit,\
+      \ lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose\
+      \ 2.0, brief=my brief, isAdmin=false, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-06T09:31:23.942Z}, isApproved=false, linkedInProfile=www.linkedin.com/?profile=2190jkwq,\
+      \ contact=8329829389, createdAt=2019-04-10T12:24:27.931Z, updatedAt=2019-04-10T12:24:27.931Z,\
+      \ _id=5cade07b3b9bf3b6d8270fe7}}"
+  inline_response_500_9:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could not delete the fund!}"
+  inline_response_404_7:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could Not find the Specified Opportunity Data!}"
+  inline_response_200_18:
+    properties:
+      error:
+        type: "boolean"
+      funds:
+        type: "array"
+        items:
+          type: "object"
+          properties: {}
+    example: "{error=false, funds=[{_id=5bfc14f6f3510c0308f63005, investorType=INDIVIDUAL_INVESTOR,\
+      \ fundName=Rahul's Test Fund, sector=FOOD, preferredStartupStage=MVP, fundCurrency=INR,\
+      \ fundValue=30000, createdBy=auth0|5bfa6049fd7df44d2a62ce14}, {_id=5cac89a668367698b0333601,\
+      \ investorType=ANGEL_NETWORK, fundName=VISION Fund, preferredStartupStage=MVP,\
+      \ createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com,\
+      \ emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose\
+      \ 2.0, brief=my brief, isAdmin=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-06T09:31:23.942Z}, linkedInProfile=www.linkedin.com/?profile=jdkwe99jdow,\
+      \ contact=9090909078, createdAt=2019-04-09T12:01:42.163Z, updatedAt=2019-04-09T12:02:19.625Z}]}"
+  inline_response_500_8:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could not Update the Fund!}"
+  inline_response_500_7:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could not Save Your Fund!}"
+  inline_response_500_6:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could Not delete the Opportunity!}"
+  inline_response_404_9:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could Not find the Find you were Looking For!}"
+  inline_response_200_15:
+    properties:
+      error:
+        type: "boolean"
+      msg:
+        type: "string"
+      opportunity:
+        type: "object"
+        properties: {}
+    example: "{error=false, msg=Opportunity Successfully Updated., opportunity={opportunity={_id=5cab14fc70095b559d5eda4a,\
+      \ project={_id=5ca48422b7b102e96f3fae9b, projectName=Universe's Model, projectNature=SERVICE,\
+      \ sector=EDUCATION, startupStage=IDEA, teamSize=10, acceptingFunds=true, pitch=my\
+      \ pitch for this project that will make it a success., problemSolvingDescription=my\
+      \ description, createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain,\
+      \ email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
+      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-01T09:38:11.109Z}, isApproved=true, createdByName=Udit Jain,\
+      \ projectApprovalStatus=Approved, createdAt=2019-04-03T10:00:02.116Z, updatedAt=2019-04-05T09:15:52.717Z,\
+      \ approvedAt=2019-04-05T09:15:52.656Z}, requirement=SERVICE_PARTNERS_VENDORS,\
+      \ details=some details are changed , createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
+      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-01T09:38:11.109Z}, createdAt=2019-04-08T09:31:40.155Z, updatedAt=2019-04-08T09:32:46.174Z}}}"
+  inline_response_500_5:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could Not Update the Opportunity!}"
+  inline_response_200_14:
+    properties:
+      error:
+        type: "boolean"
+      opportunity:
+        type: "object"
+        properties: {}
+      msg:
+        type: "string"
+    example: "{error=false, msg=Opportunity for the Project Created, opportunity={project={_id=5ca48422b7b102e96f3fae9b,\
+      \ projectName=Universe's Model, projectNature=SERVICE, sector=EDUCATION, startupStage=IDEA,\
+      \ teamSize=10, acceptingFunds=true, pitch=my pitch for this project that will\
+      \ make it a success., problemSolvingDescription=my description, createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
+      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-01T09:38:11.109Z}, isApproved=true, createdByName=Udit Jain,\
+      \ projectApprovalStatus=Approved, createdAt=2019-04-03T10:00:02.116Z, updatedAt=2019-04-05T09:15:52.717Z,\
+      \ approvedAt=2019-04-05T09:15:52.656Z}, requirement=SERVICE_PARTNERS_VENDORS,\
+      \ details=some details about this opportunity, createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
+      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-01T09:38:11.109Z}, createdAt=2019-04-08T09:31:40.155Z, updatedAt=2019-04-08T09:31:40.155Z,\
+      \ _id=5cab14fc70095b559d5eda4a}}"
+  inline_response_500_4:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could Not Create the Opportunity Post!}"
+  inline_response_500_3:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could not create the Get in touch Form!}"
+  inline_response_200_17:
+    properties:
+      error:
+        type: "boolean"
+      msg:
+        type: "string"
+    example: "{error=false, msg=Successfully Notified the Creator.}"
+  inline_response_500_2:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could Not Delete the Project!}"
+  inline_response_200_16:
+    properties:
+      error:
+        type: "boolean"
+      msg:
+        type: "string"
+      opportunity:
+        type: "object"
+        properties: {}
+    example: "{error=false, msg=Successfully deleted the Opportunity., opportunity={}}"
+  inline_response_500_1:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could Not Update the Project!}"
+  Opportunity:
+    type: "object"
+    properties:
+      requirement:
+        type: "string"
+        enum:
+        - "IDEA_VALIDATION"
+        - "CO_FOUNDER"
+        - "SERVICE_PARTNERS_VENDORS"
+        - "REFERENCE_CONNECTIONS"
+        - "MENTORS_CONSULTANTS"
+        - "FUNDING"
+      details:
+        type: "string"
+    example:
+      requirement: "IDEA_VALIDATION"
+      details: "details about the opportunity"
+  inline_response_200:
+    properties:
+      error:
+        type: "boolean"
+      users:
+        type: "array"
+        items:
+          type: "object"
+          properties: {}
+    example: "{error=false, users=[{_id=5c9efdde0bb9defc9c218c65, fullName=Udit Jain,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ sub=linkedin|oP4sPrYxft, isAdmin=true, isFormFilled=true, isActive=true, createdAt=1553923550413,\
+      \ updatedAt=1553927113266, brief=my brief, purpose=my purpose}]}"
+  inline_response_403:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Not Authorized!}"
+  Body:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+        description: "token from `OAuth`"
+      purpose:
+        type: "string"
+        description: "Can be `FOUNDER, INVESTOR or MENTOR`"
+      brief:
+        type: "string"
+  inline_response_401:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Not Logged In!}"
+  inline_response_400_2:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Stage can be Idea, MVP, Growth, Beta, Growing in\
+      \ Revenues}"
+  Opportunity_1:
+    type: "object"
+    properties:
+      projectId:
+        type: "string"
+      requirement:
+        type: "string"
+        enum:
+        - "IDEA_VALIDATION"
+        - "CO_FOUNDER"
+        - "SERVICE_PARTNERS_VENDORS"
+        - "REFERENCE_CONNECTIONS"
+        - "MENTORS_CONSULTANTS"
+        - "FUNDING"
+      details:
+        type: "string"
+      fundingGoal:
+        type: "string"
+    example:
+      requirement: "CO_FOUNDER"
+      projectId: "5ca48422b7b102e96f3fae9b"
+      details: "opportunity details that is to be changed"
+      fundingGoal: "$4M"
+  inline_response_400:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=No token in body!}"
+  inline_response_400_1:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=No Project Stage provided!}"
+  inline_response_404:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could not find any Users!}"
+  Project_1:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      category:
+        type: "string"
+        enum:
+        - "PRODUCT"
+        - "SERVICE"
+        - "CAUSE"
+        - "OTHERS"
+      sector:
+        type: "string"
+        enum:
+        - "HEALTHCARE_FITNESS"
+        - "FIN_TECH"
+        - "E_COMMERCE"
+        - "CONSUMER"
+        - "FOOD"
+        - "EDUCATION"
+        - "HR"
+      stage:
+        type: "string"
+        enum:
+        - "IDEA"
+        - "MVP"
+        - "GROWTH"
+        - "BETA"
+        - "GROWING"
+      teamSize:
+        type: "string"
+      acceptingFunds:
+        type: "boolean"
+      pitch:
+        type: "string"
+      websiteLink:
+        type: "string"
+      twitterLink:
+        type: "string"
+      facebookLink:
+        type: "string"
+      linkedInLink:
+        type: "string"
+      coverImage:
+        type: "string"
+      logo:
+        type: "string"
+    example:
+      name: "Universe's Model"
+      category: "CAUSE"
+  Approval Status:
+    type: "object"
+    properties:
+      isApproved:
+        type: "boolean"
+      status:
+        type: "string"
+        enum:
+        - "IN_REVIEW"
+        - "APPROVED"
+        - "REJECTED"
+    example:
+      isApproved: false
+      status: "IN_REVIEW"
