@@ -5,7 +5,7 @@ info:
   version: "1"
   title: "cofnders api "
 host: "virtserver.swaggerhub.com"
-basePath: "/co3929/cofnders/1"
+basePath: "/https://b2wuhx8v6d.execute-api.ap-southeast-1.amazonaws.com/dev"
 schemes:
 - "https"
 paths:
@@ -2018,6 +2018,7 @@ paths:
               msg: "Fund has been Added. Under Approval"
               fund:
                 investorType: "ANGEL_NETWORK"
+                fundName: "Fund Name"
                 preferredStartupStage: "MVP"
                 createdBy:
                   _id: "5c9efdde0bb9defc9c218c65"
@@ -2892,8 +2893,9 @@ definitions:
         type: "object"
         properties: {}
     example: "{error=false, msg=Fund has been Added. Under Approval, fund={investorType=ANGEL_NETWORK,\
-      \ preferredStartupStage=MVP, createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit,\
-      \ lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fundName=Fund Name, preferredStartupStage=MVP, createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
       \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose\
       \ 2.0, brief=my brief, isAdmin=false, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
       \ updatedAt=2019-04-06T09:31:23.942Z}, isApproved=false, linkedInProfile=www.linkedin.com/?profile=2190jkwq,\
@@ -3365,6 +3367,8 @@ definitions:
         - "INCUBATOR"
         - "FAMILY"
         - "ANGEL_NETWORK"
+      name:
+        type: "string"
       startupStage:
         type: "string"
         enum:
@@ -3378,7 +3382,8 @@ definitions:
       linkedInLink:
         type: "string"
     example:
-      investorType: "ANGEL_NETWORK"
+      investorType: "ANGEL_NETWORK,"
+      name: "Fund Name"
       startupStage: "MVP"
       contact: 8329829389
       linkedInLink: "www.linkedin.com/?profile=2190jkwq"
