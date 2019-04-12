@@ -96,6 +96,17 @@ module.exports.fundsUserIdGET = function fundsUserIdGET (req, res, next) {
     });
 };
 
+module.exports.ideasGET = function ideasGET (req, res, next) {
+  var authorization = req.swagger.params['Authorization'].value;
+  Default.ideasGET(authorization)
+    .then(function (response) {
+      utils.writeJson(res, response);
+    })
+    .catch(function (response) {
+      utils.writeJson(res, response);
+    });
+};
+
 module.exports.opportunitiesGET = function opportunitiesGET (req, res, next) {
   var authorization = req.swagger.params['Authorization'].value;
   var limit = req.swagger.params['limit'].value;

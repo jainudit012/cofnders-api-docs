@@ -5,7 +5,7 @@ info:
   version: "1"
   title: "cofnders api "
 host: "virtserver.swaggerhub.com"
-basePath: "/https://b2wuhx8v6d.execute-api.ap-southeast-1.amazonaws.com/dev"
+basePath: "/co3929/cofnders/1"
 schemes:
 - "https"
 paths:
@@ -62,18 +62,6 @@ paths:
             example:
               error: true
               reason: "Not Authorized!"
-        404:
-          description: "No Users Found in DB."
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "boolean"
-              reason:
-                type: "string"
-            example:
-              error: true
-              reason: "Could not find any Users!"
       x-swagger-router-controller: "Default"
     post:
       description: "Lets user get a new token"
@@ -230,6 +218,12 @@ paths:
               user:
                 type: "object"
                 properties: {}
+              projects:
+                type: "number"
+              opportunities:
+                type: "number"
+              funds:
+                type: "number"
             example:
               error: false
               user:
@@ -248,6 +242,9 @@ paths:
                 isActive: true
                 createdAt: "2019-03-30T05:25:50.413Z"
                 updatedAt: "2019-03-30T06:25:13.266Z"
+              projects: 2
+              opportunities: 0
+              funds: 0
         401:
           description: "Not logged in or no token send in headers."
           schema:
@@ -427,18 +424,6 @@ paths:
             example:
               error: true
               reason: "You do not have Correct Permissions!"
-        404:
-          description: "No Projects found in database."
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "boolean"
-              reason:
-                type: "string"
-            example:
-              error: true
-              reason: "Could not find any Projects!"
       x-swagger-router-controller: "Default"
     post:
       description: "Creates Project if User is Logged In."
@@ -625,6 +610,7 @@ paths:
                 projectApprovalStatus: "Approved"
                 createdAt: "2019-04-03T10:00:02.116Z"
                 updatedAt: "2019-04-03T10:45:52.752Z"
+                getInTouchFilled: true
               - _id: "5ca494686839789fccd3f25b"
                 projectName: "Start Universe"
                 projectNature: "SERVICE"
@@ -655,18 +641,7 @@ paths:
                 projectApprovalStatus: "Approved"
                 createdAt: "2019-04-03T11:09:28.147Z"
                 updatedAt: "2019-04-03T11:09:28.147Z"
-        404:
-          description: "No Projects Found."
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "boolean"
-              reason:
-                type: "string"
-            example:
-              error: true
-              reason: "Could not find any Projects!"
+                getInTouchFilled: false
       x-swagger-router-controller: "Default"
   /projects/{userId}:
     get:
@@ -801,18 +776,6 @@ paths:
             example:
               error: true
               reason: "Must be Logged In!"
-        404:
-          description: "No Projects Found."
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "boolean"
-              reason:
-                type: "string"
-            example:
-              error: true
-              reason: "Could not find any Projects!"
       x-swagger-router-controller: "Default"
   /projects/{projectId}/:
     put:
@@ -1181,6 +1144,33 @@ paths:
               error: true
               reason: "Could not create the Get in touch Form!"
       x-swagger-router-controller: "Default"
+  /ideas:
+    get:
+      description: "Gets the Latest 3 Approved Projects"
+      operationId: "ideasGET"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "JWT token set in header"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "Return List of 3 Latest Approved Projects"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "boolean"
+              trending:
+                type: "array"
+                items:
+                  type: "object"
+                  properties: {}
+            example:
+              error: false
+              trending: []
+      x-swagger-router-controller: "Default"
   /opportunities:
     get:
       description: "Gets All Opportunities from Database"
@@ -1288,18 +1278,6 @@ paths:
                   updatedAt: "2019-04-01T09:38:11.109Z"
                 createdAt: "2019-04-08T09:31:40.155Z"
                 updatedAt: "2019-04-08T09:33:22.956Z"
-        404:
-          description: "No Opportunities Found in DB."
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "boolean"
-              reason:
-                type: "string"
-            example:
-              error: true
-              reason: "Could Not find Any Opportunities!"
       x-swagger-router-controller: "Default"
   /opportunities/{userId}:
     get:
@@ -1481,18 +1459,6 @@ paths:
             example:
               error: true
               reason: "Not Logged In!"
-        404:
-          description: "No Opportunities Found."
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "boolean"
-              reason:
-                type: "string"
-            example:
-              error: true
-              reason: "Could not Find Any Opportunities!"
       x-swagger-router-controller: "Default"
   /opportunities/{projectId}/:
     post:
@@ -1638,7 +1604,7 @@ paths:
       x-swagger-router-controller: "Default"
   /opportunities/{opportunityId}//:
     put:
-      description: "Edits Project if User is the Creator or Admin."
+      description: "Edits Opportunity if User is the Creator or Admin."
       operationId: "opportunitiesOpportunityIdPUT"
       parameters:
       - name: "Authorization"
@@ -2018,18 +1984,6 @@ paths:
                 contact: "9090909078"
                 createdAt: "2019-04-09T12:01:42.163Z"
                 updatedAt: "2019-04-09T12:02:19.625Z"
-        404:
-          description: "No Funds Found"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "boolean"
-              reason:
-                type: "string"
-            example:
-              error: true
-              reason: "Could not find any Funds!"
       x-swagger-router-controller: "Default"
     post:
       description: "Creates A new Fund Listing"
@@ -2271,18 +2225,6 @@ paths:
             example:
               error: true
               reason: "Not Correct Permissions!"
-        404:
-          description: "Could not find any funds or User"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "boolean"
-              reason:
-                type: "string"
-            example:
-              error: true
-              reason: "Could not find any Funds!"
       x-swagger-router-controller: "Default"
   /funds/{fundId}/:
     put:
@@ -2827,13 +2769,6 @@ definitions:
       reason:
         type: "string"
     example: "{error=true, reason=Fund is not created by You!}"
-  inline_response_404_10:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=Could Not find the Fund you were Looking For!}"
   Body_3:
     type: "object"
     properties:
@@ -2916,8 +2851,55 @@ definitions:
         properties: {}
       msg:
         type: "string"
-    example: "{error=false, project={}, msg=Successfully Deleted the Project.}"
+    example: "{error=false, project={_id=5ca48422b7b102e96f3fae9b, projectName=Universe's\
+      \ Model, projectNature=CAUSE, sector=EDUCATION, startupStage=IDEA, teamSize=10,\
+      \ pitch=my pitch for this project that will make it a success., acceptingFunds=true,\
+      \ isApproved=false, projectApprovalStatus=ADDED, problemSolvingDescription=my\
+      \ description, createdByName=Udit Jain, createdAt=2019-04-03T10:00:02.116Z,\
+      \ updatedAt=2019-04-03T10:00:02.116Z}, msg=Successfully Updated the Project.}"
   inline_response_200_22:
+    properties:
+      error:
+        type: "boolean"
+      funds:
+        type: "array"
+        items:
+          type: "object"
+          properties: {}
+    example: "{error=false, funds=[{_id=5cac785249b2d991ef647c2e, investorType=FAMILY,\
+      \ fundName=BASIC funds, preferredStartupStage=IDEA, createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose\
+      \ 2.0, brief=my brief, isAdmin=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-06T09:31:23.942Z}, isApproved=false, linkedInProfile=www.linkedin.com/?profile=0e-02lkdlw,\
+      \ contact=8329482384, createdAt=2019-04-09T10:47:46.626Z, updatedAt=2019-04-09T10:47:46.626Z},\
+      \ {_id=5cac89a668367698b0333601, investorType=ANGEL_NETWORK, fundName=VISION\
+      \ Fund, preferredStartupStage=MVP, createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose\
+      \ 2.0, brief=my brief, isAdmin=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-06T09:31:23.942Z}, isApproved=true, linkedInProfile=www.linkedin.com/?profile=jdkwe99jdow,\
+      \ contact=9090909078, createdAt=2019-04-09T12:01:42.163Z, updatedAt=2019-04-09T12:02:19.625Z}]}"
+  inline_response_200_21:
+    properties:
+      error:
+        type: "boolean"
+      msg:
+        type: "string"
+      fund:
+        type: "object"
+        properties: {}
+    example: "{error=false, msg=Fund has been Added. Under Approval, fund={investorType=ANGEL_NETWORK,\
+      \ preferredStartupStage=MVP, createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit,\
+      \ lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose\
+      \ 2.0, brief=my brief, isAdmin=false, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-06T09:31:23.942Z}, isApproved=false, linkedInProfile=www.linkedin.com/?profile=2190jkwq,\
+      \ contact=8329829389, createdAt=2019-04-10T12:24:27.931Z, updatedAt=2019-04-10T12:24:27.931Z,\
+      \ _id=5cade07b3b9bf3b6d8270fe7}}"
+  inline_response_200_24:
     properties:
       error:
         type: "boolean"
@@ -2927,7 +2909,7 @@ definitions:
         type: "object"
         properties: {}
     example: "{error=false, msg=Successfully Removed Your Fund, fund={}}"
-  inline_response_200_21:
+  inline_response_200_23:
     properties:
       error:
         type: "boolean"
@@ -2944,7 +2926,120 @@ definitions:
       \ 2.0, brief=my brief, isAdmin=false, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
       \ updatedAt=2019-04-06T09:31:23.942Z}, isApproved=false, linkedInProfile=www.linkedin.com/?profile=2190jkwq,\
       \ contact=8329829389, createdAt=2019-04-10T12:24:27.931Z, updatedAt=2019-04-10T12:24:27.931Z}}"
-  inline_response_200_24:
+  inline_response_200_5:
+    properties:
+      error:
+        type: "boolean"
+      projects:
+        type: "array"
+        items:
+          type: "object"
+          properties: {}
+    example: "{error=false, projects=[{_id=5c9efdde0bb9defc9c218c65, firstName=Udit,\
+      \ lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose, brief=thi\
+      \ is my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-03-30T06:25:13.266Z}]}"
+  inline_response_200_6:
+    properties:
+      error:
+        type: "boolean"
+      project:
+        type: "object"
+        properties: {}
+      msg:
+        type: "string"
+    example: "{error=false, project={projectName=Start Universe, projectNature=SERVICE,\
+      \ sector=EDUCATION, startupStage=IDEA, teamSize=10, acceptingFunds=true, pitch=my\
+      \ pitch for this project that will make it a success., problemSolvingDescription=my\
+      \ description, createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain,\
+      \ email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
+      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-01T09:38:11.109Z}, isApproved=false, createdByName=Udit\
+      \ Jain, projectApprovalStatus=ADDED, createdAt=2019-04-03T10:00:02.116Z, updatedAt=2019-04-03T10:00:02.116Z,\
+      \ _id=5ca48422b7b102e96f3fae9b}, msg=New Project Successfully Created.}"
+  inline_response_200_7:
+    properties:
+      error:
+        type: "boolean"
+      projects:
+        type: "object"
+        properties: {}
+    example: "{error=false, projects=[{_id=5ca48422b7b102e96f3fae9b, projectName=Universe's\
+      \ Model, projectNature=SERVICE, sector=EDUCATION, startupStage=IDEA, teamSize=10,\
+      \ acceptingFunds=true, pitch=my pitch for this project that will make it a success.,\
+      \ problemSolvingDescription=my description, createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
+      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-01T09:38:11.109Z}, isApproved=true, createdByName=Udit Jain,\
+      \ projectApprovalStatus=Approved, createdAt=2019-04-03T10:00:02.116Z, updatedAt=2019-04-03T10:45:52.752Z,\
+      \ getInTouchFilled=true}, {_id=5ca494686839789fccd3f25b, projectName=Start Universe,\
+      \ projectNature=SERVICE, sector=EDUCATION, startupStage=IDEA, teamSize=10, acceptingFunds=true,\
+      \ pitch=my pitch for this project that will make it a success., problemSolvingDescription=my\
+      \ description, createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain,\
+      \ email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
+      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-01T09:38:11.109Z}, isApproved=true, createdByName=Udit Jain,\
+      \ projectApprovalStatus=Approved, createdAt=2019-04-03T11:09:28.147Z, updatedAt=2019-04-03T11:09:28.147Z,\
+      \ getInTouchFilled=false}]}"
+  inline_response_200_20:
+    properties:
+      error:
+        type: "boolean"
+      funds:
+        type: "array"
+        items:
+          type: "object"
+          properties: {}
+    example: "{error=false, funds=[{_id=5bfc14f6f3510c0308f63005, investorType=INDIVIDUAL_INVESTOR,\
+      \ fundName=Rahul's Test Fund, sector=FOOD, preferredStartupStage=MVP, fundCurrency=INR,\
+      \ fundValue=30000, createdBy=auth0|5bfa6049fd7df44d2a62ce14}, {_id=5cac89a668367698b0333601,\
+      \ investorType=ANGEL_NETWORK, fundName=VISION Fund, preferredStartupStage=MVP,\
+      \ createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com,\
+      \ emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose\
+      \ 2.0, brief=my brief, isAdmin=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-06T09:31:23.942Z}, linkedInProfile=www.linkedin.com/?profile=jdkwe99jdow,\
+      \ contact=9090909078, createdAt=2019-04-09T12:01:42.163Z, updatedAt=2019-04-09T12:02:19.625Z}]}"
+  inline_response_200_8:
+    properties:
+      error:
+        type: "boolean"
+      projects:
+        type: "object"
+        properties: {}
+    example: "{error=false, projects=[{_id=5ca48422b7b102e96f3fae9b, projectName=Universe's\
+      \ Model, projectNature=SERVICE, sector=EDUCATION, startupStage=IDEA, teamSize=10,\
+      \ acceptingFunds=true, pitch=my pitch for this project that will make it a success.,\
+      \ problemSolvingDescription=my description, createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
+      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-01T09:38:11.109Z}, isApproved=false, createdByName=Udit\
+      \ Jain, projectApprovalStatus=IN_REVIEW, createdAt=2019-04-03T10:00:02.116Z,\
+      \ updatedAt=2019-04-03T10:45:52.752Z}, {_id=5ca494686839789fccd3f25b, projectName=Start\
+      \ Universe, projectNature=SERVICE, sector=EDUCATION, startupStage=IDEA, teamSize=10,\
+      \ acceptingFunds=true, pitch=my pitch for this project that will make it a success.,\
+      \ problemSolvingDescription=my description, createdBy={_id=5c9efdde0bb9defc9c218c65,\
+      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
+      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
+      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-04-01T09:38:11.109Z}, isApproved=false, createdByName=Udit\
+      \ Jain, projectApprovalStatus=ADDED, createdAt=2019-04-03T11:09:28.147Z, updatedAt=2019-04-03T11:09:28.147Z}]}"
+  inline_response_400_11:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Already Sent Your Response!}"
+  inline_response_200_26:
     properties:
       error:
         type: "boolean"
@@ -2961,7 +3056,14 @@ definitions:
       \ 2.0, brief=my brief, isAdmin=false, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
       \ updatedAt=2019-04-06T09:31:23.942Z}, isApproved=true, linkedInProfile=www.linkedin.com/?profile=2190jkwq,\
       \ contact=8329829389, createdAt=2019-04-10T12:24:27.931Z, updatedAt=2019-04-10T12:43:03.211Z}}"
-  inline_response_200_23:
+  inline_response_400_10:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Fund cannot be deleted once Approved!}"
+  inline_response_200_25:
     properties:
       error:
         type: "boolean"
@@ -2995,132 +3097,6 @@ definitions:
       \ projectApprovalStatus=Approved, createdAt=2019-04-03T10:00:02.116Z, updatedAt=2019-04-09T13:49:35.032Z,\
       \ approvedAt=2019-04-05T09:15:52.656Z}, pdfLink=https://upload-pdf-cofnders.s3.ap-southeast-1.amazonaws.com/hqtRpI82scB5YGcsoVG.pdf,\
       \ _id=5cadedcb82c80ab77f18b0de}}"
-  inline_response_200_5:
-    properties:
-      error:
-        type: "boolean"
-      project:
-        type: "object"
-        properties: {}
-      msg:
-        type: "string"
-    example: "{error=false, project={projectName=Start Universe, projectNature=SERVICE,\
-      \ sector=EDUCATION, startupStage=IDEA, teamSize=10, acceptingFunds=true, pitch=my\
-      \ pitch for this project that will make it a success., problemSolvingDescription=my\
-      \ description, createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain,\
-      \ email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
-      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
-      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
-      \ updatedAt=2019-04-01T09:38:11.109Z}, isApproved=false, createdByName=Udit\
-      \ Jain, projectApprovalStatus=ADDED, createdAt=2019-04-03T10:00:02.116Z, updatedAt=2019-04-03T10:00:02.116Z,\
-      \ _id=5ca48422b7b102e96f3fae9b}, msg=New Project Successfully Created.}"
-  inline_response_200_6:
-    properties:
-      error:
-        type: "boolean"
-      projects:
-        type: "object"
-        properties: {}
-    example: "{error=false, projects=[{_id=5ca48422b7b102e96f3fae9b, projectName=Universe's\
-      \ Model, projectNature=SERVICE, sector=EDUCATION, startupStage=IDEA, teamSize=10,\
-      \ acceptingFunds=true, pitch=my pitch for this project that will make it a success.,\
-      \ problemSolvingDescription=my description, createdBy={_id=5c9efdde0bb9defc9c218c65,\
-      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
-      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
-      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
-      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
-      \ updatedAt=2019-04-01T09:38:11.109Z}, isApproved=true, createdByName=Udit Jain,\
-      \ projectApprovalStatus=Approved, createdAt=2019-04-03T10:00:02.116Z, updatedAt=2019-04-03T10:45:52.752Z},\
-      \ {_id=5ca494686839789fccd3f25b, projectName=Start Universe, projectNature=SERVICE,\
-      \ sector=EDUCATION, startupStage=IDEA, teamSize=10, acceptingFunds=true, pitch=my\
-      \ pitch for this project that will make it a success., problemSolvingDescription=my\
-      \ description, createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain,\
-      \ email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
-      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
-      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
-      \ updatedAt=2019-04-01T09:38:11.109Z}, isApproved=true, createdByName=Udit Jain,\
-      \ projectApprovalStatus=Approved, createdAt=2019-04-03T11:09:28.147Z, updatedAt=2019-04-03T11:09:28.147Z}]}"
-  inline_response_200_7:
-    properties:
-      error:
-        type: "boolean"
-      projects:
-        type: "object"
-        properties: {}
-    example: "{error=false, projects=[{_id=5ca48422b7b102e96f3fae9b, projectName=Universe's\
-      \ Model, projectNature=SERVICE, sector=EDUCATION, startupStage=IDEA, teamSize=10,\
-      \ acceptingFunds=true, pitch=my pitch for this project that will make it a success.,\
-      \ problemSolvingDescription=my description, createdBy={_id=5c9efdde0bb9defc9c218c65,\
-      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
-      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
-      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
-      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
-      \ updatedAt=2019-04-01T09:38:11.109Z}, isApproved=false, createdByName=Udit\
-      \ Jain, projectApprovalStatus=IN_REVIEW, createdAt=2019-04-03T10:00:02.116Z,\
-      \ updatedAt=2019-04-03T10:45:52.752Z}, {_id=5ca494686839789fccd3f25b, projectName=Start\
-      \ Universe, projectNature=SERVICE, sector=EDUCATION, startupStage=IDEA, teamSize=10,\
-      \ acceptingFunds=true, pitch=my pitch for this project that will make it a success.,\
-      \ problemSolvingDescription=my description, createdBy={_id=5c9efdde0bb9defc9c218c65,\
-      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
-      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
-      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
-      \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
-      \ updatedAt=2019-04-01T09:38:11.109Z}, isApproved=false, createdByName=Udit\
-      \ Jain, projectApprovalStatus=ADDED, createdAt=2019-04-03T11:09:28.147Z, updatedAt=2019-04-03T11:09:28.147Z}]}"
-  inline_response_200_20:
-    properties:
-      error:
-        type: "boolean"
-      funds:
-        type: "array"
-        items:
-          type: "object"
-          properties: {}
-    example: "{error=false, funds=[{_id=5cac785249b2d991ef647c2e, investorType=FAMILY,\
-      \ fundName=BASIC funds, preferredStartupStage=IDEA, createdBy={_id=5c9efdde0bb9defc9c218c65,\
-      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
-      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
-      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose\
-      \ 2.0, brief=my brief, isAdmin=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
-      \ updatedAt=2019-04-06T09:31:23.942Z}, isApproved=false, linkedInProfile=www.linkedin.com/?profile=0e-02lkdlw,\
-      \ contact=8329482384, createdAt=2019-04-09T10:47:46.626Z, updatedAt=2019-04-09T10:47:46.626Z},\
-      \ {_id=5cac89a668367698b0333601, investorType=ANGEL_NETWORK, fundName=VISION\
-      \ Fund, preferredStartupStage=MVP, createdBy={_id=5c9efdde0bb9defc9c218c65,\
-      \ firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true,\
-      \ profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
-      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose\
-      \ 2.0, brief=my brief, isAdmin=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
-      \ updatedAt=2019-04-06T09:31:23.942Z}, isApproved=true, linkedInProfile=www.linkedin.com/?profile=jdkwe99jdow,\
-      \ contact=9090909078, createdAt=2019-04-09T12:01:42.163Z, updatedAt=2019-04-09T12:02:19.625Z}]}"
-  inline_response_200_8:
-    properties:
-      error:
-        type: "boolean"
-      project:
-        type: "object"
-        properties: {}
-      msg:
-        type: "string"
-    example: "{error=false, project={_id=5ca48422b7b102e96f3fae9b, projectName=Universe's\
-      \ Model, projectNature=CAUSE, sector=EDUCATION, startupStage=IDEA, teamSize=10,\
-      \ pitch=my pitch for this project that will make it a success., acceptingFunds=true,\
-      \ isApproved=false, projectApprovalStatus=ADDED, problemSolvingDescription=my\
-      \ description, createdByName=Udit Jain, createdAt=2019-04-03T10:00:02.116Z,\
-      \ updatedAt=2019-04-03T10:00:02.116Z}, msg=Successfully Updated the Project.}"
-  inline_response_400_11:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=Already Sent Your Response!}"
-  inline_response_400_10:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=Fund cannot be deleted once Approved!}"
   Project:
     type: "object"
     properties:
@@ -3212,25 +3188,44 @@ definitions:
       user:
         type: "object"
         properties: {}
+      projects:
+        type: "number"
+      opportunities:
+        type: "number"
+      funds:
+        type: "number"
+    example: "{error=false, user={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain,\
+      \ email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
+      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose, brief=my\
+      \ brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
+      \ updatedAt=2019-03-30T06:25:13.266Z}, projects=2, opportunities=0, funds=0}"
+  inline_response_200_4:
+    properties:
+      error:
+        type: "boolean"
+      user:
+        type: "object"
+        properties: {}
     example: "{error=false, user={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain,\
       \ email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
       \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose, brief=my\
       \ brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
       \ updatedAt=2019-03-30T06:25:13.266Z}}"
-  inline_response_200_4:
+  inline_response_200_11:
     properties:
       error:
         type: "boolean"
-      projects:
-        type: "array"
-        items:
-          type: "object"
-          properties: {}
-    example: "{error=false, projects=[{_id=5c9efdde0bb9defc9c218c65, firstName=Udit,\
-      \ lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
-      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose, brief=thi\
-      \ is my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
-      \ updatedAt=2019-03-30T06:25:13.266Z}]}"
+      project:
+        type: "object"
+        properties: {}
+      msg:
+        type: "string"
+    example: "{error=false, project={_id=5ca48422b7b102e96f3fae9b, projectName=Universe's\
+      \ Model, projectNature=SERVICE, sector=EDUCATION, startupStage=IDEA, teamSize=10,\
+      \ pitch=my pitch for this project that will make it a success., acceptingFunds=true,\
+      \ isApproved=false, projectApprovalStatus=IN_REVIEW, problemSolvingDescription=my\
+      \ description, createdByName=Udit Jain, createdAt=2019-04-03T10:00:02.116Z,\
+      \ updatedAt=2019-04-03T10:39:45.165Z}, msg=Successfully Updated Approval Status.}"
   inline_response_400_4:
     properties:
       error:
@@ -3238,13 +3233,6 @@ definitions:
       reason:
         type: "string"
     example: "{error=true, reason=Status can be only IN_REVIEW, APPROVED or REJECTED}"
-  inline_response_200_11:
-    properties:
-      error:
-        type: "boolean"
-      msg:
-        type: "string"
-    example: "{error=false, msg=Successfully sent your Response.}"
   Fund_1:
     type: "object"
     properties:
@@ -3284,13 +3272,6 @@ definitions:
         - "JPY"
     example:
       investorType: "INCUBATOR"
-  inline_response_400_3:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=Cannot Delete Once Project is Approved!}"
   inline_response_200_10:
     properties:
       error:
@@ -3300,20 +3281,197 @@ definitions:
         properties: {}
       msg:
         type: "string"
-    example: "{error=false, project={_id=5ca48422b7b102e96f3fae9b, projectName=Universe's\
-      \ Model, projectNature=SERVICE, sector=EDUCATION, startupStage=IDEA, teamSize=10,\
-      \ pitch=my pitch for this project that will make it a success., acceptingFunds=true,\
-      \ isApproved=false, projectApprovalStatus=IN_REVIEW, problemSolvingDescription=my\
-      \ description, createdByName=Udit Jain, createdAt=2019-04-03T10:00:02.116Z,\
-      \ updatedAt=2019-04-03T10:39:45.165Z}, msg=Successfully Updated Approval Status.}"
+    example: "{error=false, project={}, msg=Successfully Deleted the Project.}"
+  inline_response_400_3:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Cannot Delete Once Project is Approved!}"
   inline_response_404_2:
     properties:
       error:
         type: "boolean"
       reason:
         type: "string"
-    example: "{error=true, reason=Could not find any Projects!}"
+    example: "{error=true, reason=Could Not find the Project!}"
   inline_response_200_13:
+    properties:
+      error:
+        type: "boolean"
+      trending:
+        type: "array"
+        items:
+          type: "object"
+          properties: {}
+    example: "{error=false, trending=[]}"
+  inline_response_400_6:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Project Has to be Approved to create an Opportunity!}"
+  User:
+    type: "object"
+    properties:
+      purpose:
+        type: "string"
+      brief:
+        type: "string"
+      userType:
+        type: "string"
+        enum:
+        - "Investor"
+        - "Mentor"
+        - "Consulting_Firm"
+        - "IT_Services"
+        - "Investment_Advisor"
+        - "Startup_Founder"
+      image:
+        type: "string"
+    example:
+      purpose: "my purpose"
+      brief: "this is my brief"
+  inline_response_404_1:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=No User Found!}"
+  inline_response_200_12:
+    properties:
+      error:
+        type: "boolean"
+      msg:
+        type: "string"
+    example: "{error=false, msg=Successfully sent your Response.}"
+  inline_response_400_5:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=User Type is to be Provided!}"
+  Fund:
+    type: "object"
+    properties:
+      investorType:
+        type: "string"
+        enum:
+        - "INDIVIDUAL_INVESTOR"
+        - "INCUBATOR"
+        - "FAMILY"
+        - "ANGEL_NETWORK"
+      startupStage:
+        type: "string"
+        enum:
+        - "IDEA"
+        - "MVP"
+        - "GROWTH"
+        - "BETA"
+        - "GROWING"
+      contact:
+        type: "string"
+      linkedInLink:
+        type: "string"
+    example:
+      investorType: "ANGEL_NETWORK"
+      startupStage: "MVP"
+      contact: 8329829389
+      linkedInLink: "www.linkedin.com/?profile=2190jkwq"
+  inline_response_400_8:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Investor type can only be 'INDIVIDUAL_INVESTOR,\
+      \ INCUBATOR, FAMILY or ANGEL_NETWORK!'}"
+  inline_response_404_4:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could Not find the Find you were Looking For!}"
+  inline_response_400_7:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=The Project Is not Approved!}"
+  inline_response_404_3:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could Not find the Specified Opportunity Data!}"
+  inline_response_400_9:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Fund Currency Allowed Values are 'USD, INR, EUR,\
+      \ GBP, CNY, JPY'}"
+  inline_response_404_5:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could Not find the Fund you were Looking For!}"
+  inline_response_200_19:
+    properties:
+      error:
+        type: "boolean"
+      msg:
+        type: "string"
+    example: "{error=false, msg=Successfully Notified the Creator.}"
+  inline_response_500_9:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could not delete the fund!}"
+  inline_response_200_18:
+    properties:
+      error:
+        type: "boolean"
+      msg:
+        type: "string"
+      opportunity:
+        type: "object"
+        properties: {}
+    example: "{error=false, msg=Successfully deleted the Opportunity., opportunity={}}"
+  inline_response_500_8:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could not Update the Fund!}"
+  inline_response_500_7:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could not Save Your Fund!}"
+  inline_response_500_6:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Could Not delete the Opportunity!}"
+  inline_response_200_15:
     properties:
       error:
         type: "boolean"
@@ -3354,49 +3512,14 @@ definitions:
       \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
       \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
       \ updatedAt=2019-04-01T09:38:11.109Z}, createdAt=2019-04-08T09:31:40.155Z, updatedAt=2019-04-08T09:33:22.956Z}]}"
-  inline_response_400_6:
+  inline_response_500_5:
     properties:
       error:
         type: "boolean"
       reason:
         type: "string"
-    example: "{error=true, reason=Project Has to be Approved to create an Opportunity!}"
-  User:
-    type: "object"
-    properties:
-      purpose:
-        type: "string"
-      brief:
-        type: "string"
-      userType:
-        type: "string"
-        enum:
-        - "Investor"
-        - "Mentor"
-        - "Consulting_Firm"
-        - "IT_Services"
-        - "Investment_Advisor"
-        - "Startup_Founder"
-      image:
-        type: "string"
-    example:
-      purpose: "my purpose"
-      brief: "this is my brief"
-  inline_response_404_1:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=Could not find the User!}"
-  inline_response_400_5:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=User Type is to be Provided!}"
-  inline_response_200_12:
+    example: "{error=true, reason=Could Not Update the Opportunity!}"
+  inline_response_200_14:
     properties:
       error:
         type: "boolean"
@@ -3422,170 +3545,21 @@ definitions:
       \ email=jainudit.012@gmail.com, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
       \ fullName=Udit Jain, isActive=true, createdAt=2019-03-30T05:25:50.413Z, updatedAt=2019-04-01T09:38:11.109Z},\
       \ createdAt=2019-04-08T09:31:40.155Z, updatedAt=2019-04-08T09:33:22.956Z}]}"
-  inline_response_404_4:
+  inline_response_500_4:
     properties:
       error:
         type: "boolean"
       reason:
         type: "string"
-    example: "{error=true, reason=Could Not find the Project!}"
-  Fund:
-    type: "object"
-    properties:
-      investorType:
-        type: "string"
-        enum:
-        - "INDIVIDUAL_INVESTOR"
-        - "INCUBATOR"
-        - "FAMILY"
-        - "ANGEL_NETWORK"
-      startupStage:
-        type: "string"
-        enum:
-        - "IDEA"
-        - "MVP"
-        - "GROWTH"
-        - "BETA"
-        - "GROWING"
-      contact:
-        type: "string"
-      linkedInLink:
-        type: "string"
-    example:
-      investorType: "ANGEL_NETWORK"
-      startupStage: "MVP"
-      contact: 8329829389
-      linkedInLink: "www.linkedin.com/?profile=2190jkwq"
-  inline_response_400_8:
+    example: "{error=true, reason=Could Not Create the Opportunity Post!}"
+  inline_response_500_3:
     properties:
       error:
         type: "boolean"
       reason:
         type: "string"
-    example: "{error=true, reason=Investor type can only be 'INDIVIDUAL_INVESTOR,\
-      \ INCUBATOR, FAMILY or ANGEL_NETWORK!'}"
-  inline_response_404_3:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=No User Found!}"
-  inline_response_400_7:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=The Project Is not Approved!}"
-  inline_response_404_6:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=Could not Find Any Opportunities!}"
-  inline_response_404_5:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=Could Not find Any Opportunities!}"
-  inline_response_400_9:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=Fund Currency Allowed Values are 'USD, INR, EUR,\
-      \ GBP, CNY, JPY'}"
-  inline_response_404_8:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=Could not find any Funds!}"
-  inline_response_200_19:
-    properties:
-      error:
-        type: "boolean"
-      msg:
-        type: "string"
-      fund:
-        type: "object"
-        properties: {}
-    example: "{error=false, msg=Fund has been Added. Under Approval, fund={investorType=ANGEL_NETWORK,\
-      \ preferredStartupStage=MVP, createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit,\
-      \ lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
-      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose\
-      \ 2.0, brief=my brief, isAdmin=false, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
-      \ updatedAt=2019-04-06T09:31:23.942Z}, isApproved=false, linkedInProfile=www.linkedin.com/?profile=2190jkwq,\
-      \ contact=8329829389, createdAt=2019-04-10T12:24:27.931Z, updatedAt=2019-04-10T12:24:27.931Z,\
-      \ _id=5cade07b3b9bf3b6d8270fe7}}"
-  inline_response_500_9:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=Could not delete the fund!}"
-  inline_response_404_7:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=Could Not find the Specified Opportunity Data!}"
-  inline_response_200_18:
-    properties:
-      error:
-        type: "boolean"
-      funds:
-        type: "array"
-        items:
-          type: "object"
-          properties: {}
-    example: "{error=false, funds=[{_id=5bfc14f6f3510c0308f63005, investorType=INDIVIDUAL_INVESTOR,\
-      \ fundName=Rahul's Test Fund, sector=FOOD, preferredStartupStage=MVP, fundCurrency=INR,\
-      \ fundValue=30000, createdBy=auth0|5bfa6049fd7df44d2a62ce14}, {_id=5cac89a668367698b0333601,\
-      \ investorType=ANGEL_NETWORK, fundName=VISION Fund, preferredStartupStage=MVP,\
-      \ createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com,\
-      \ emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY,\
-      \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose\
-      \ 2.0, brief=my brief, isAdmin=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
-      \ updatedAt=2019-04-06T09:31:23.942Z}, linkedInProfile=www.linkedin.com/?profile=jdkwe99jdow,\
-      \ contact=9090909078, createdAt=2019-04-09T12:01:42.163Z, updatedAt=2019-04-09T12:02:19.625Z}]}"
-  inline_response_500_8:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=Could not Update the Fund!}"
-  inline_response_500_7:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=Could not Save Your Fund!}"
-  inline_response_500_6:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=Could Not delete the Opportunity!}"
-  inline_response_404_9:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=Could Not find the Find you were Looking For!}"
-  inline_response_200_15:
+    example: "{error=true, reason=Could not create the Get in touch Form!}"
+  inline_response_200_17:
     properties:
       error:
         type: "boolean"
@@ -3611,14 +3585,14 @@ definitions:
       \ fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?,\
       \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
       \ updatedAt=2019-04-01T09:38:11.109Z}, createdAt=2019-04-08T09:31:40.155Z, updatedAt=2019-04-08T09:32:46.174Z}}}"
-  inline_response_500_5:
+  inline_response_500_2:
     properties:
       error:
         type: "boolean"
       reason:
         type: "string"
-    example: "{error=true, reason=Could Not Update the Opportunity!}"
-  inline_response_200_14:
+    example: "{error=true, reason=Could Not Delete the Project!}"
+  inline_response_200_16:
     properties:
       error:
         type: "boolean"
@@ -3645,44 +3619,6 @@ definitions:
       \ brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z,\
       \ updatedAt=2019-04-01T09:38:11.109Z}, createdAt=2019-04-08T09:31:40.155Z, updatedAt=2019-04-08T09:31:40.155Z,\
       \ _id=5cab14fc70095b559d5eda4a}}"
-  inline_response_500_4:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=Could Not Create the Opportunity Post!}"
-  inline_response_500_3:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=Could not create the Get in touch Form!}"
-  inline_response_200_17:
-    properties:
-      error:
-        type: "boolean"
-      msg:
-        type: "string"
-    example: "{error=false, msg=Successfully Notified the Creator.}"
-  inline_response_500_2:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=Could Not Delete the Project!}"
-  inline_response_200_16:
-    properties:
-      error:
-        type: "boolean"
-      msg:
-        type: "string"
-      opportunity:
-        type: "object"
-        properties: {}
-    example: "{error=false, msg=Successfully deleted the Opportunity., opportunity={}}"
   inline_response_500_1:
     properties:
       error:
@@ -3797,7 +3733,7 @@ definitions:
         type: "boolean"
       reason:
         type: "string"
-    example: "{error=true, reason=Could not find any Users!}"
+    example: "{error=true, reason=Could not find the User!}"
   Project_1:
     type: "object"
     properties:

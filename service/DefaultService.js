@@ -7,7 +7,7 @@
  * authorization String JWT token set in header
  * fundId String Id of the Fund that is to be applied for
  * body Body_3 The Application form in the request body.
- * returns inline_response_200_23
+ * returns inline_response_200_25
  **/
 exports.fundsApplyFundIdPOST = function(authorization,fundId,body) {
   return new Promise(function(resolve, reject) {
@@ -27,7 +27,7 @@ exports.fundsApplyFundIdPOST = function(authorization,fundId,body) {
  *
  * authorization String JWT token set in header
  * fundId String Id of the Fund that is to be applied for
- * returns inline_response_200_24
+ * returns inline_response_200_26
  **/
 exports.fundsApproveFundIdPUT = function(authorization,fundId) {
   return new Promise(function(resolve, reject) {
@@ -47,7 +47,7 @@ exports.fundsApproveFundIdPUT = function(authorization,fundId) {
  *
  * authorization String JWT token set in header
  * fundId String Id of the Fund that is to be changed
- * returns inline_response_200_22
+ * returns inline_response_200_24
  **/
 exports.fundsFundIdDELETE = function(authorization,fundId) {
   return new Promise(function(resolve, reject) {
@@ -68,7 +68,7 @@ exports.fundsFundIdDELETE = function(authorization,fundId) {
  * authorization String JWT token set in header
  * fundId String Id of the Fund that is to be changed
  * fund Fund_1 The Fund Data that is to be changed. (optional)
- * returns inline_response_200_21
+ * returns inline_response_200_23
  **/
 exports.fundsFundIdPUT = function(authorization,fundId,fund) {
   return new Promise(function(resolve, reject) {
@@ -91,7 +91,7 @@ exports.fundsFundIdPUT = function(authorization,fundId,fund) {
  * offset String No. of documents to skip (optional)
  * sector String  (optional)
  * investorType String  (optional)
- * returns inline_response_200_18
+ * returns inline_response_200_20
  **/
 exports.fundsGET = function(authorization,limit,offset,sector,investorType) {
   return new Promise(function(resolve, reject) {
@@ -111,7 +111,7 @@ exports.fundsGET = function(authorization,limit,offset,sector,investorType) {
  *
  * authorization String JWT token set in header
  * fund Fund The Fund Data from the User in request Body.
- * returns inline_response_200_19
+ * returns inline_response_200_21
  **/
 exports.fundsPOST = function(authorization,fund) {
   return new Promise(function(resolve, reject) {
@@ -135,12 +135,31 @@ exports.fundsPOST = function(authorization,fund) {
  * offset String No. of documents to skip (optional)
  * sector String  (optional)
  * investorType String  (optional)
- * returns inline_response_200_20
+ * returns inline_response_200_22
  **/
 exports.fundsUserIdGET = function(authorization,userId,limit,offset,sector,investorType) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = "{error=false, funds=[{_id=5cac785249b2d991ef647c2e, investorType=FAMILY, fundName=BASIC funds, preferredStartupStage=IDEA, createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY, fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose 2.0, brief=my brief, isAdmin=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z, updatedAt=2019-04-06T09:31:23.942Z}, isApproved=false, linkedInProfile=www.linkedin.com/?profile=0e-02lkdlw, contact=8329482384, createdAt=2019-04-09T10:47:46.626Z, updatedAt=2019-04-09T10:47:46.626Z}, {_id=5cac89a668367698b0333601, investorType=ANGEL_NETWORK, fundName=VISION Fund, preferredStartupStage=MVP, createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY, fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose 2.0, brief=my brief, isAdmin=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z, updatedAt=2019-04-06T09:31:23.942Z}, isApproved=true, linkedInProfile=www.linkedin.com/?profile=jdkwe99jdow, contact=9090909078, createdAt=2019-04-09T12:01:42.163Z, updatedAt=2019-04-09T12:02:19.625Z}]}";
+    if (Object.keys(examples).length > 0) {
+      resolve(examples[Object.keys(examples)[0]]);
+    } else {
+      resolve();
+    }
+  });
+}
+
+
+/**
+ * Gets the Latest 3 Approved Projects
+ *
+ * authorization String JWT token set in header (optional)
+ * returns inline_response_200_13
+ **/
+exports.ideasGET = function(authorization) {
+  return new Promise(function(resolve, reject) {
+    var examples = {};
+    examples['application/json'] = "{error=false, trending=[]}";
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -158,7 +177,7 @@ exports.fundsUserIdGET = function(authorization,userId,limit,offset,sector,inves
  * offset String No. of documents to skip (optional)
  * sector String  (optional)
  * projectStage String  (optional)
- * returns inline_response_200_12
+ * returns inline_response_200_14
  **/
 exports.opportunitiesGET = function(authorization,limit,offset,sector,projectStage) {
   return new Promise(function(resolve, reject) {
@@ -179,7 +198,7 @@ exports.opportunitiesGET = function(authorization,limit,offset,sector,projectSta
  * authorization String JWT token set in header
  * opportunityId String Id of the Opportunity for which the form is to be sent
  * body Body_2 The Get in Touch Data in request body.
- * returns inline_response_200_17
+ * returns inline_response_200_19
  **/
 exports.opportunitiesGetInTouchOpportunityIdPOST = function(authorization,opportunityId,body) {
   return new Promise(function(resolve, reject) {
@@ -199,7 +218,7 @@ exports.opportunitiesGetInTouchOpportunityIdPOST = function(authorization,opport
  *
  * authorization String JWT token set in header
  * opportunityId String Id of the Opportunity that is to be deleted
- * returns inline_response_200_16
+ * returns inline_response_200_18
  **/
 exports.opportunitiesOpportunityIdDELETE = function(authorization,opportunityId) {
   return new Promise(function(resolve, reject) {
@@ -215,12 +234,12 @@ exports.opportunitiesOpportunityIdDELETE = function(authorization,opportunityId)
 
 
 /**
- * Edits Project if User is the Creator or Admin.
+ * Edits Opportunity if User is the Creator or Admin.
  *
  * authorization String JWT token set in header
  * opportunityId String Id of the Opportunity that is to be changed
  * opportunity Opportunity_1 The Opportunity Data that is to be changed. (optional)
- * returns inline_response_200_15
+ * returns inline_response_200_17
  **/
 exports.opportunitiesOpportunityIdPUT = function(authorization,opportunityId,opportunity) {
   return new Promise(function(resolve, reject) {
@@ -241,7 +260,7 @@ exports.opportunitiesOpportunityIdPUT = function(authorization,opportunityId,opp
  * projectId String Id of the Approved Project that is to added in Opportunity
  * authorization String JWT token set in header
  * opportunity Opportunity The Opportunity Data.
- * returns inline_response_200_14
+ * returns inline_response_200_16
  **/
 exports.opportunitiesProjectIdPOST = function(projectId,authorization,opportunity) {
   return new Promise(function(resolve, reject) {
@@ -265,7 +284,7 @@ exports.opportunitiesProjectIdPOST = function(projectId,authorization,opportunit
  * offset String No. of documents to skip (optional)
  * sector String  (optional)
  * projectStage String  (optional)
- * returns inline_response_200_13
+ * returns inline_response_200_15
  **/
 exports.opportunitiesUserIdGET = function(userId,authorization,limit,offset,sector,projectStage) {
   return new Promise(function(resolve, reject) {
@@ -286,7 +305,7 @@ exports.opportunitiesUserIdGET = function(userId,authorization,limit,offset,sect
  * authorization String JWT token set in header
  * projectId String Id of the Project that is to be changed
  * approval Status Approval Status Status that is to be set for the Project. (optional)
- * returns inline_response_200_10
+ * returns inline_response_200_11
  **/
 exports.projectsApproveProjectIdPUT = function(authorization,projectId,approvalStatus) {
   return new Promise(function(resolve, reject) {
@@ -309,12 +328,12 @@ exports.projectsApproveProjectIdPUT = function(authorization,projectId,approvalS
  * offset String No. of documents to skip (optional)
  * sector String  (optional)
  * stage String  (optional)
- * returns inline_response_200_6
+ * returns inline_response_200_7
  **/
 exports.projectsApprovedGET = function(authorization,limit,offset,sector,stage) {
   return new Promise(function(resolve, reject) {
     var examples = {};
-    examples['application/json'] = "{error=false, projects=[{_id=5ca48422b7b102e96f3fae9b, projectName=Universe's Model, projectNature=SERVICE, sector=EDUCATION, startupStage=IDEA, teamSize=10, acceptingFunds=true, pitch=my pitch for this project that will make it a success., problemSolvingDescription=my description, createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY, fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?, brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z, updatedAt=2019-04-01T09:38:11.109Z}, isApproved=true, createdByName=Udit Jain, projectApprovalStatus=Approved, createdAt=2019-04-03T10:00:02.116Z, updatedAt=2019-04-03T10:45:52.752Z}, {_id=5ca494686839789fccd3f25b, projectName=Start Universe, projectNature=SERVICE, sector=EDUCATION, startupStage=IDEA, teamSize=10, acceptingFunds=true, pitch=my pitch for this project that will make it a success., problemSolvingDescription=my description, createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY, fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?, brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z, updatedAt=2019-04-01T09:38:11.109Z}, isApproved=true, createdByName=Udit Jain, projectApprovalStatus=Approved, createdAt=2019-04-03T11:09:28.147Z, updatedAt=2019-04-03T11:09:28.147Z}]}";
+    examples['application/json'] = "{error=false, projects=[{_id=5ca48422b7b102e96f3fae9b, projectName=Universe's Model, projectNature=SERVICE, sector=EDUCATION, startupStage=IDEA, teamSize=10, acceptingFunds=true, pitch=my pitch for this project that will make it a success., problemSolvingDescription=my description, createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY, fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?, brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z, updatedAt=2019-04-01T09:38:11.109Z}, isApproved=true, createdByName=Udit Jain, projectApprovalStatus=Approved, createdAt=2019-04-03T10:00:02.116Z, updatedAt=2019-04-03T10:45:52.752Z, getInTouchFilled=true}, {_id=5ca494686839789fccd3f25b, projectName=Start Universe, projectNature=SERVICE, sector=EDUCATION, startupStage=IDEA, teamSize=10, acceptingFunds=true, pitch=my pitch for this project that will make it a success., problemSolvingDescription=my description, createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY, fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose is this?, brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z, updatedAt=2019-04-01T09:38:11.109Z}, isApproved=true, createdByName=Udit Jain, projectApprovalStatus=Approved, createdAt=2019-04-03T11:09:28.147Z, updatedAt=2019-04-03T11:09:28.147Z, getInTouchFilled=false}]}";
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -332,7 +351,7 @@ exports.projectsApprovedGET = function(authorization,limit,offset,sector,stage) 
  * offset String No. of documents to skip (optional)
  * sector String  (optional)
  * projectStage String  (optional)
- * returns inline_response_200_4
+ * returns inline_response_200_5
  **/
 exports.projectsGET = function(authorization,limit,offset,sector,projectStage) {
   return new Promise(function(resolve, reject) {
@@ -353,7 +372,7 @@ exports.projectsGET = function(authorization,limit,offset,sector,projectStage) {
  * authorization String JWT token set in header
  * projectId String Id of the Project for ehich the Get in Touch is to be sent
  * body Body_1 The Get in Touch Data in request body.
- * returns inline_response_200_11
+ * returns inline_response_200_12
  **/
 exports.projectsIntouchProjectIdPOST = function(authorization,projectId,body) {
   return new Promise(function(resolve, reject) {
@@ -373,7 +392,7 @@ exports.projectsIntouchProjectIdPOST = function(authorization,projectId,body) {
  *
  * authorization String JWT token set in header
  * project Project The Project Data from the User in request Body.
- * returns inline_response_200_5
+ * returns inline_response_200_6
  **/
 exports.projectsPOST = function(authorization,project) {
   return new Promise(function(resolve, reject) {
@@ -393,7 +412,7 @@ exports.projectsPOST = function(authorization,project) {
  *
  * authorization String JWT token set in header
  * projectId String Id of the Project that is to be deleted
- * returns inline_response_200_9
+ * returns inline_response_200_10
  **/
 exports.projectsProjectIdDELETE = function(authorization,projectId) {
   return new Promise(function(resolve, reject) {
@@ -414,7 +433,7 @@ exports.projectsProjectIdDELETE = function(authorization,projectId) {
  * authorization String JWT token set in header
  * projectId String Id of the Project that is to be changed
  * project Project_1 The Project Data that is to be changed. (optional)
- * returns inline_response_200_8
+ * returns inline_response_200_9
  **/
 exports.projectsProjectIdPUT = function(authorization,projectId,project) {
   return new Promise(function(resolve, reject) {
@@ -438,7 +457,7 @@ exports.projectsProjectIdPUT = function(authorization,projectId,project) {
  * offset String No. of documents to skip (optional)
  * sector String  (optional)
  * stage String  (optional)
- * returns inline_response_200_7
+ * returns inline_response_200_8
  **/
 exports.projectsUserIdGET = function(authorization,userId,limit,offset,sector,stage) {
   return new Promise(function(resolve, reject) {
@@ -481,7 +500,7 @@ exports.usersGET = function(authorization) {
 exports.usersMeGET = function(authorization) {
   return new Promise(function(resolve, reject) {
     var examples = {};
-    examples['application/json'] = "{error=false, user={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY, fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose, brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z, updatedAt=2019-03-30T06:25:13.266Z}}";
+    examples['application/json'] = "{error=false, user={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY, fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=my purpose, brief=my brief, isAdmin=true, isFormFilled=true, isActive=true, createdAt=2019-03-30T05:25:50.413Z, updatedAt=2019-03-30T06:25:13.266Z}, projects=2, opportunities=0, funds=0}";
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -535,7 +554,7 @@ exports.usersPUT = function(authorization,user) {
  *
  * userId String Id of the User that is to searched.
  * authorization String JWT token set in header
- * returns inline_response_200_3
+ * returns inline_response_200_4
  **/
 exports.usersUserIdGET = function(userId,authorization) {
   return new Promise(function(resolve, reject) {
