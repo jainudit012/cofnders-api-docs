@@ -70,8 +70,8 @@ module.exports.fundsGET = function fundsGET (req, res, next) {
 
 module.exports.fundsPOST = function fundsPOST (req, res, next) {
   var authorization = req.swagger.params['Authorization'].value;
-  var fund = req.swagger.params['Fund'].value;
-  Default.fundsPOST(authorization,fund)
+  var body = req.swagger.params['Body'].value;
+  Default.fundsPOST(authorization,body)
     .then(function (response) {
       utils.writeJson(res, response);
     })

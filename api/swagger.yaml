@@ -1995,11 +1995,11 @@ paths:
         required: true
         type: "string"
       - in: "body"
-        name: "Fund"
+        name: "Body"
         description: "The Fund Data from the User in request Body."
         required: true
         schema:
-          $ref: "#/definitions/Fund"
+          $ref: "#/definitions/Body_3"
       responses:
         200:
           description: "Fund Added but under Approval"
@@ -2247,7 +2247,7 @@ paths:
         description: "The Fund Data that is to be changed."
         required: false
         schema:
-          $ref: "#/definitions/Fund_1"
+          $ref: "#/definitions/Fund"
       responses:
         200:
           description: "Updated the Fund"
@@ -2438,7 +2438,7 @@ paths:
         description: "The Application form in the request body."
         required: true
         schema:
-          $ref: "#/definitions/Body_3"
+          $ref: "#/definitions/Body_4"
       responses:
         200:
           description: "Successfully recorded the response from the User"
@@ -2770,8 +2770,12 @@ definitions:
       reason:
         type: "string"
     example: "{error=true, reason=Fund is not created by You!}"
-  Body_3:
+  Body_4:
     type: "object"
+    required:
+    - "amount"
+    - "projectId"
+    - "valuation"
     properties:
       projectId:
         type: "string"
@@ -2789,6 +2793,41 @@ definitions:
       valuation: 50000000
       message: "some message for the investor"
       pdf: "iVBORw0KGgoAAAANSUhEUgAAA14AAANeCAYAAAF13+9kAAAABGdBTUEAALGPC/xhBQAAAVlpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IlhNUCBDb3JlIDUuNC4wIj4KICAgPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICAgICAgPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIKICAgICAgICAgICAgeG1sbnM6dGlmZj0iaHR0cDovL25zLmFkb2JlLmNvbS90aWZmLzEuMC8iPgogICAgICAgICA8dGlmZjpPcmllbnRhdGlvbj4xPC90aWZmOk9yaWVudGF0aW9uPgogICAgICA8L3JkZjpEZXNjcmlwdGlvbj4KICAgPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KTMInWQAAQABJREFUeAHsnQX8NEX5wOelu7u7X0BQRP6UhCAlCII0SAjSIS1IC9IhSgjSSghKC0p3p9Kd0p33n2dljt29nb3dvb275+a+8/n8frszO/E832fnno3ZmRENGwxhYAiMMjCSImhEAIMN2ImAwTDYgBEYMHHpYRhswAgMmLj0MAw2YAQGTFx6GAYbMAIDJi49DIMNGIEBE5cehsEGjMCAiUsPw2ADRmDAxKWHYbABIzBg4tLDMNiAERgwcelhGGzACAyYuPQwDDZgBAZMXHoYBhswAgMmLj0Mgw0YgQETlx6GwQaMwICJSw/DYANGYMDEpYdhsAEjMGDi0sMw2IARGDBx6WEYbMAIDJi49DAMNmAEBkxcehgGGzACFcW9+uqrzYgRIyqWrl5stOpFs0u2U2KBBRYw999/f3bhAUltp6NPDSn3/vvvm/HHH99UnTGqNoMVVeKBBx6IzsyqAvtgaE+/+eabm0bqRPcRtnDHk4PlGWucccYxH330USbPGprOrLfbiXF9e61DbT0sDilPibiysp+XN14n+/8j0PFVYtwAUmU7A7z11lu57F9//XVz8sknm0MPPbRtXVLRjjvuGP3EihyjjDKKaVf/p59+ag455BBz5513euW45pprzL777muef/55b568AyL/M888k5el+jELuKNgW5af1OivaEUuf5mt9QGJ6ouUdQVGHXXUpoxZ5S"
+  Body_3:
+    type: "object"
+    required:
+    - "contact"
+    - "investorType"
+    - "linkedInLink"
+    - "startupStage"
+    properties:
+      investorType:
+        type: "string"
+        enum:
+        - "INDIVIDUAL_INVESTOR"
+        - "INCUBATOR"
+        - "FAMILY"
+        - "ANGEL_NETWORK"
+      name:
+        type: "string"
+      startupStage:
+        type: "string"
+        enum:
+        - "IDEA"
+        - "MVP"
+        - "GROWTH"
+        - "BETA"
+        - "GROWING"
+      contact:
+        type: "string"
+      linkedInLink:
+        type: "string"
+    example:
+      investorType: "ANGEL_NETWORK,"
+      name: "Fund Name"
+      startupStage: "MVP"
+      contact: 8329829389
+      linkedInLink: "www.linkedin.com/?profile=2190jkwq"
   inline_response_500:
     properties:
       error:
@@ -2805,6 +2844,8 @@ definitions:
     example: "{error=true, reason=Expired Token!}"
   Body_2:
     type: "object"
+    required:
+    - "userType"
     properties:
       userType:
         type: "string"
@@ -2825,6 +2866,9 @@ definitions:
       message: "some message in get in touch form"
   Body_1:
     type: "object"
+    required:
+    - "linkedInLink"
+    - "userType"
     properties:
       userType:
         type: "string"
@@ -3101,6 +3145,14 @@ definitions:
       \ _id=5cadedcb82c80ab77f18b0de}}"
   Project:
     type: "object"
+    required:
+    - "acceptingFunds"
+    - "category"
+    - "name"
+    - "pitch"
+    - "sector"
+    - "stage"
+    - "teamSize"
     properties:
       name:
         type: "string"
@@ -3235,45 +3287,6 @@ definitions:
       reason:
         type: "string"
     example: "{error=true, reason=Status can be only IN_REVIEW, APPROVED or REJECTED}"
-  Fund_1:
-    type: "object"
-    properties:
-      name:
-        type: "string"
-      description:
-        type: "string"
-      investorType:
-        type: "string"
-        enum:
-        - "INDIVIDUAL_INVESTOR"
-        - "INCUBATOR"
-        - "FAMILY"
-        - "ANGEL_NETWORK!"
-      contact:
-        type: "string"
-      linkedInLink:
-        type: "string"
-      startupStage:
-        type: "string"
-        enum:
-        - "IDEA"
-        - "MVP"
-        - "GROWTH"
-        - "BETA"
-        - "GROWING"
-      fundValue:
-        type: "string"
-      fundCurrency:
-        type: "string"
-        enum:
-        - "USD"
-        - "INR"
-        - "EUR"
-        - "GBP"
-        - "CNY"
-        - "JPY"
-    example:
-      investorType: "INCUBATOR"
   inline_response_200_10:
     properties:
       error:
@@ -3357,17 +3370,31 @@ definitions:
       reason:
         type: "string"
     example: "{error=true, reason=User Type is to be Provided!}"
+  inline_response_400_8:
+    properties:
+      error:
+        type: "boolean"
+      reason:
+        type: "string"
+    example: "{error=true, reason=Investor type can only be 'INDIVIDUAL_INVESTOR,\
+      \ INCUBATOR, FAMILY or ANGEL_NETWORK!'}"
   Fund:
     type: "object"
     properties:
+      name:
+        type: "string"
+      description:
+        type: "string"
       investorType:
         type: "string"
         enum:
         - "INDIVIDUAL_INVESTOR"
         - "INCUBATOR"
         - "FAMILY"
-        - "ANGEL_NETWORK"
-      name:
+        - "ANGEL_NETWORK!"
+      contact:
+        type: "string"
+      linkedInLink:
         type: "string"
       startupStage:
         type: "string"
@@ -3377,24 +3404,19 @@ definitions:
         - "GROWTH"
         - "BETA"
         - "GROWING"
-      contact:
+      fundValue:
         type: "string"
-      linkedInLink:
+      fundCurrency:
         type: "string"
+        enum:
+        - "USD"
+        - "INR"
+        - "EUR"
+        - "GBP"
+        - "CNY"
+        - "JPY"
     example:
-      investorType: "ANGEL_NETWORK,"
-      name: "Fund Name"
-      startupStage: "MVP"
-      contact: 8329829389
-      linkedInLink: "www.linkedin.com/?profile=2190jkwq"
-  inline_response_400_8:
-    properties:
-      error:
-        type: "boolean"
-      reason:
-        type: "string"
-    example: "{error=true, reason=Investor type can only be 'INDIVIDUAL_INVESTOR,\
-      \ INCUBATOR, FAMILY or ANGEL_NETWORK!'}"
+      investorType: "INCUBATOR"
   inline_response_404_4:
     properties:
       error:
@@ -3633,6 +3655,8 @@ definitions:
     example: "{error=true, reason=Could Not Update the Project!}"
   Opportunity:
     type: "object"
+    required:
+    - "requirement"
     properties:
       requirement:
         type: "string"
@@ -3671,13 +3695,16 @@ definitions:
     example: "{error=true, reason=Not Authorized!}"
   Body:
     type: "object"
+    required:
+    - "purpose"
+    - "token"
     properties:
       token:
         type: "string"
         description: "token from `OAuth`"
       purpose:
         type: "string"
-        description: "Can be `FOUNDER, INVESTOR or MENTOR`"
+        description: "Should be`Sent one time only,  Can be FOUNDER, INVESTOR or MENTOR`."
       brief:
         type: "string"
   inline_response_401:

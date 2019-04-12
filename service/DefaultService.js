@@ -6,7 +6,7 @@
  *
  * authorization String JWT token set in header
  * fundId String Id of the Fund that is to be applied for
- * body Body_3 The Application form in the request body.
+ * body Body_4 The Application form in the request body.
  * returns inline_response_200_25
  **/
 exports.fundsApplyFundIdPOST = function(authorization,fundId,body) {
@@ -67,7 +67,7 @@ exports.fundsFundIdDELETE = function(authorization,fundId) {
  *
  * authorization String JWT token set in header
  * fundId String Id of the Fund that is to be changed
- * fund Fund_1 The Fund Data that is to be changed. (optional)
+ * fund Fund The Fund Data that is to be changed. (optional)
  * returns inline_response_200_23
  **/
 exports.fundsFundIdPUT = function(authorization,fundId,fund) {
@@ -110,10 +110,10 @@ exports.fundsGET = function(authorization,limit,offset,sector,investorType) {
  * Creates A new Fund Listing
  *
  * authorization String JWT token set in header
- * fund Fund The Fund Data from the User in request Body.
+ * body Body_3 The Fund Data from the User in request Body.
  * returns inline_response_200_21
  **/
-exports.fundsPOST = function(authorization,fund) {
+exports.fundsPOST = function(authorization,body) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = "{error=false, msg=Fund has been Added. Under Approval, fund={investorType=ANGEL_NETWORK, fundName=Fund Name, preferredStartupStage=MVP, createdBy={_id=5c9efdde0bb9defc9c218c65, firstName=Udit, lastName=Jain, email=jainudit.012@gmail.com, emailVerified=true, profilePicture=https://media.licdn.com/dms/image/C5103AQG_1EUajUCTXg/profile-displayphoto-shrink_100_100/0?e=1559174400&v=beta&t=WQDJMxQCMYLl4rJ2yYszirYi-rVnd2q1xvtD5greIyY, fullName=Udit Jain, sub=linkedin|oP4sPrYxft, purpose=this is the new purpose 2.0, brief=my brief, isAdmin=false, isActive=true, createdAt=2019-03-30T05:25:50.413Z, updatedAt=2019-04-06T09:31:23.942Z}, isApproved=false, linkedInProfile=www.linkedin.com/?profile=2190jkwq, contact=8329829389, createdAt=2019-04-10T12:24:27.931Z, updatedAt=2019-04-10T12:24:27.931Z, _id=5cade07b3b9bf3b6d8270fe7}}";
