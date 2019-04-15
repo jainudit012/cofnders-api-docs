@@ -3,6 +3,33 @@
 var utils = require('../utils/writer.js');
 var Default = require('../service/DefaultService');
 
+module.exports.configCloudinaryGET = function configCloudinaryGET (req, res, next) {
+  var authorization = req.swagger.params['Authorization'].value;
+  Default.configCloudinaryGET(authorization)
+    .then(function (response) {
+      utils.writeJson(res, response);
+    })
+    .catch(function (response) {
+      utils.writeJson(res, response);
+    });
+};
+
+module.exports.feedGET = function feedGET (req, res, next) {
+  var authorization = req.swagger.params['Authorization'].value;
+  var limit = req.swagger.params['limit'].value;
+  var offset = req.swagger.params['offset'].value;
+  var sector = req.swagger.params['sector'].value;
+  var projectStage = req.swagger.params['projectStage'].value;
+  var requirement = req.swagger.params['requirement'].value;
+  Default.feedGET(authorization,limit,offset,sector,projectStage,requirement)
+    .then(function (response) {
+      utils.writeJson(res, response);
+    })
+    .catch(function (response) {
+      utils.writeJson(res, response);
+    });
+};
+
 module.exports.fundsApplyFundIdPOST = function fundsApplyFundIdPOST (req, res, next) {
   var authorization = req.swagger.params['Authorization'].value;
   var fundId = req.swagger.params['fundId'].value;
@@ -113,7 +140,8 @@ module.exports.opportunitiesGET = function opportunitiesGET (req, res, next) {
   var offset = req.swagger.params['offset'].value;
   var sector = req.swagger.params['sector'].value;
   var projectStage = req.swagger.params['projectStage'].value;
-  Default.opportunitiesGET(authorization,limit,offset,sector,projectStage)
+  var requirement = req.swagger.params['requirement'].value;
+  Default.opportunitiesGET(authorization,limit,offset,sector,projectStage,requirement)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -180,7 +208,8 @@ module.exports.opportunitiesUserIdGET = function opportunitiesUserIdGET (req, re
   var offset = req.swagger.params['offset'].value;
   var sector = req.swagger.params['sector'].value;
   var projectStage = req.swagger.params['projectStage'].value;
-  Default.opportunitiesUserIdGET(userId,authorization,limit,offset,sector,projectStage)
+  var requirement = req.swagger.params['requirement'].value;
+  Default.opportunitiesUserIdGET(userId,authorization,limit,offset,sector,projectStage,requirement)
     .then(function (response) {
       utils.writeJson(res, response);
     })
