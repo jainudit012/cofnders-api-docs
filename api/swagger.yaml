@@ -1834,7 +1834,7 @@ paths:
               error: true
               reason: "Could Not delete the Opportunity!"
       x-swagger-router-controller: "Default"
-  /opportunities/getInTouch/{opportunityId}:
+  /opportunities/intouch/{opportunityId}:
     post:
       description: "Sends Get In Touch Form for Opportunity."
       operationId: "opportunitiesGetInTouchOpportunityIdPOST"
